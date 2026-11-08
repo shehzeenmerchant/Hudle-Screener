@@ -3,7 +3,7 @@ import ssl
 import time
 import urllib.error
 import urllib.request
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 BASE_URL = "https://api.hudle.in/api/v1"
 HEADERS = {
@@ -15,9 +15,11 @@ HEADERS = {
 CTX = ssl.create_default_context()
 
 class HudleClient:
-    def __init__(self, delay_between_requests: float = 0.3, auth_token: Optional[str] = None):
+    def __init__(self, delay_between_requests: float = 0.25, auth_token: Optional[str] = None, cache_ttl_seconds: float = 45.0):
         self.delay = delay_between_requests
         self.auth_token = auth_token
+        self.cache_ttl = cache_ttl_seconds
+        self._slot_cache: Dict[str, Tuple[float, List[Dict[str, Any]]]] = {}
 
     def set_auth_token(self, token: str):
         self.auth_token = token.strip() if token else None
@@ -28,7 +30,7 @@ class HudleClient:
         params: Optional[Dict[str, Any]] = None,
         method: str = "GET",
         payload: Optional[Dict[str, Any]] = None,
-        max_retries: int = 5
+        max_retries: int = 4
     ) -> Dict[str, Any]:
         url = f"{BASE_URL}/{endpoint.lstrip('/')}"
         if params:
@@ -47,17 +49,15 @@ class HudleClient:
             try:
                 time.sleep(self.delay)
                 req = urllib.request.Request(url, data=data_bytes, headers=headers, method=method)
-                with urllib.request.urlopen(req, context=CTX, timeout=15) as r:
+                with urllib.request.urlopen(req, context=CTX, timeout=12) as r:
                     return json.loads(r.read().decode("utf-8"))
             except urllib.error.HTTPError as e:
                 if e.code == 429:
                     retry_after = e.headers.get("Retry-After")
-                    wait_time = int(retry_after) if retry_after and retry_after.isdigit() else max(5, (attempt + 1) * 8)
-                    print(f"⚠️  Rate limited (429). Waiting {wait_time}s before retry (attempt {attempt + 1}/{max_retries})...")
+                    wait_time = float(retry_after) if retry_after and retry_after.isdigit() else (2.0 + attempt * 0.5)
                     time.sleep(wait_time)
                 else:
                     body = e.read().decode("utf-8", errors="ignore") if hasattr(e, "read") else ""
-                    # Don't spam stack traces for expected validation/auth errors
                     if e.code not in (400, 401, 422):
                         print(f"HTTP {e.code} for {url}: {body[:200]}")
                     try:
@@ -68,7 +68,7 @@ class HudleClient:
             except Exception as e:
                 if attempt == max_retries - 1:
                     raise
-                time.sleep(2)
+                time.sleep(1.0)
         raise RuntimeError(f"Max retries exceeded for {url}")
 
     def get_venues(self, city_id: int = 2, sport_id: int = 44, per_page: int = 50) -> List[Dict[str, Any]]:
@@ -81,15 +81,27 @@ class HudleClient:
         data = self._request(f"venues/{venue_id}", {"includes": "facilities,activities,activities.facilities"})
         return data.get("data", {})
 
-    def get_slots(self, venue_id: str, facility_uuid: str, date_str: str) -> List[Dict[str, Any]]:
+    def get_slots(self, venue_id: str, facility_uuid: str, date_str: str, use_cache: bool = True) -> List[Dict[str, Any]]:
         """Fetch slots for a specific venue, court, and date (YYYY-MM-DD)."""
+        cache_key = f"{venue_id}:{facility_uuid}:{date_str}"
+        now = time.time()
+        if use_cache and cache_key in self._slot_cache:
+            ts, cached_slots = self._slot_cache[cache_key]
+            if now - ts < self.cache_ttl:
+                return cached_slots
+
         endpoint = f"web/venues/{venue_id}/facilities/{facility_uuid}/slots"
         params = {"start_date": date_str, "end_date": date_str, "grid": 1}
         data = self._request(endpoint, params)
         slot_data = data.get("data", {}).get("slot_data", [])
+        slots = []
         if slot_data:
-            return slot_data[0].get("slots", [])
-        return []
+            slots = slot_data[0].get("slots", [])
+
+        if use_cache:
+            self._slot_cache[cache_key] = (now, slots)
+
+        return slots
 
     def login(self, email: str, password: str) -> Dict[str, Any]:
         """Authenticate user and retrieve JWT token."""
