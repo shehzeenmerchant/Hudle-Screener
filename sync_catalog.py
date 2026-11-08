@@ -1,11 +1,24 @@
 import json
 import os
-import sys
+from typing import Optional, Dict, Any, List
 from hudle_client import HudleClient
 
 from classify_zones import classify_venue
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "venues_cache.json")
+
+def _parse_court(f: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    name = f.get("name", "")
+    # Filter out equipment rentals (racquets, balls, machines)
+    if any(k in name.lower() for k in ["racquet", "ball", "paddle", "machine"]):
+        return None
+    return {
+        "facility_uuid": f.get("id"),
+        "facility_id": f.get("facility_id"),
+        "name": name,
+        "slot_length": f.get("slot_length", 30),
+        "price_onwards": f.get("price_onwards") or f.get("price")
+    }
 
 def sync_mumbai_padel_catalog(client: HudleClient = None, verbose: bool = True) -> list:
     if client is None:
@@ -44,26 +57,18 @@ def sync_mumbai_padel_catalog(client: HudleClient = None, verbose: bool = True) 
                 padel_activity_id = act.get("id")
                 padel_activity_name = act.get("name")
                 for f in act.get("facilities", []):
-                    padel_courts.append({
-                        "facility_uuid": f.get("id"),
-                        "facility_id": f.get("facility_id"),
-                        "name": f.get("name"),
-                        "slot_length": f.get("slot_length", 30),
-                        "price_onwards": f.get("price_onwards") or f.get("price")
-                    })
+                    c = _parse_court(f)
+                    if c:
+                        padel_courts.append(c)
 
         # Fallback to sports if no activities
         if not padel_courts:
             for s in vd.get("sports", []):
                 if "padel" in s.get("name", "").lower():
                     for f in s.get("facilities", []):
-                        padel_courts.append({
-                            "facility_uuid": f.get("id"),
-                            "facility_id": f.get("facility_id"),
-                            "name": f.get("name"),
-                            "slot_length": f.get("slot_length", 30),
-                            "price_onwards": f.get("price_onwards") or f.get("price")
-                        })
+                        c = _parse_court(f)
+                        if c:
+                            padel_courts.append(c)
 
         if padel_courts:
             v_dict = {

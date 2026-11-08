@@ -1,7 +1,3 @@
-import argparse
-import json
-import os
-import sys
 from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
 
@@ -76,6 +72,8 @@ def normalize_zone(zone_input: Optional[str]) -> Optional[str]:
         return "eastern_suburbs"
     return z
 
+SHARED_CLIENT = HudleClient()
+
 def search_slots(
     date_str: str,
     time_window: Optional[str] = None,
@@ -85,7 +83,7 @@ def search_slots(
     client: Optional[HudleClient] = None
 ) -> List[Dict[str, Any]]:
     if client is None:
-        client = HudleClient(delay_between_requests=0.15)
+        client = SHARED_CLIENT
 
     catalog = load_cached_catalog()
     if not catalog:
@@ -169,7 +167,7 @@ def format_time_12hr(dt_str: str) -> str:
     try:
         t = datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
         return t.strftime("%I:%M %p")
-    except:
+    except Exception:
         return dt_str
 
 def display_slots_table(slots: List[Dict[str, Any]], date_str: str):

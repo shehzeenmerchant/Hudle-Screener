@@ -4,7 +4,6 @@ import getpass
 import json
 import os
 import sys
-from datetime import datetime
 
 from search import parse_date, search_slots, display_slots_table, normalize_zone
 from sync_catalog import sync_mumbai_padel_catalog, load_cached_catalog

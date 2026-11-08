@@ -262,13 +262,6 @@
     "activity_name": "Padel Court",
     "courts": [
       {
-        "facility_uuid": "a0142f05-2a1b-4c83-b2c4-26614b5b8d53",
-        "facility_id": 19283,
-        "name": "Padel Racquet",
-        "slot_length": 30,
-        "price_onwards": 75
-      },
-      {
         "facility_uuid": "0eabe1c1-e09a-4c30-af43-f4282858c388",
         "facility_id": 19279,
         "name": "Court 1",
@@ -324,20 +317,6 @@
     "activity_id": 1907,
     "activity_name": "Padel (Covered)",
     "courts": [
-      {
-        "facility_uuid": "c9092372-221b-4234-8776-d461b51a1181",
-        "facility_id": 20033,
-        "name": "Padel Racquet",
-        "slot_length": 30,
-        "price_onwards": 100
-      },
-      {
-        "facility_uuid": "ac12fc63-eb88-49de-80cf-b49d6473ebf2",
-        "facility_id": 20041,
-        "name": "Ball Machine",
-        "slot_length": 30,
-        "price_onwards": 375
-      },
       {
         "facility_uuid": "5b3c5198-065f-49a9-8081-75c565f6b35e",
         "facility_id": 20029,
@@ -443,13 +422,6 @@
     "activity_id": 2134,
     "activity_name": "Smart Padel (AC Indoor)",
     "courts": [
-      {
-        "facility_uuid": "462fd165-7802-4629-be13-23b0806a56db",
-        "facility_id": 22336,
-        "name": "Padel Racquet",
-        "slot_length": 60,
-        "price_onwards": 200
-      },
       {
         "facility_uuid": "1c31e134-9d8f-4a9f-b086-479d73a22f58",
         "facility_id": 22330,
@@ -892,13 +864,6 @@
     "activity_name": "Smart Padel (AC Indoor)",
     "courts": [
       {
-        "facility_uuid": "ee9bac63-17f7-402a-af36-27799396bc93",
-        "facility_id": 12442,
-        "name": "Padel Racquet",
-        "slot_length": 60,
-        "price_onwards": 100
-      },
-      {
         "facility_uuid": "c93e354e-afd1-43a1-ac95-b0d9098946a6",
         "facility_id": 9265,
         "name": "Court 1 Padel",
@@ -975,13 +940,6 @@
     "activity_id": 1907,
     "activity_name": "Padel (Covered)",
     "courts": [
-      {
-        "facility_uuid": "0a7fd13f-33a9-4500-8688-27e0e97bd6c2",
-        "facility_id": 10941,
-        "name": "Racquet",
-        "slot_length": 30,
-        "price_onwards": 50
-      },
       {
         "facility_uuid": "d8bbdeee-298f-4303-ad3a-7b12b03e22ff",
         "facility_id": 10940,
@@ -1270,13 +1228,6 @@
     "activity_name": "Padel (Covered)",
     "courts": [
       {
-        "facility_uuid": "eb987470-2032-4699-9347-d564f307c93a",
-        "facility_id": 18892,
-        "name": "Padel Racquet",
-        "slot_length": 30,
-        "price_onwards": 100
-      },
-      {
         "facility_uuid": "6beebe0e-e03f-4977-b62d-f700052c2a03",
         "facility_id": 15560,
         "name": "Padel Court",
@@ -1395,20 +1346,6 @@
     "activity_id": 1812,
     "activity_name": "Padel (Outdoor)",
     "courts": [
-      {
-        "facility_uuid": "2e2c0f5f-2b3f-4c11-a9c8-1496cc132fbc",
-        "facility_id": 20174,
-        "name": "Padel Racquet",
-        "slot_length": 30,
-        "price_onwards": 50
-      },
-      {
-        "facility_uuid": "19a0708f-7818-4b98-a07d-6509273ed549",
-        "facility_id": 19350,
-        "name": "Padel Ball",
-        "slot_length": 30,
-        "price_onwards": 100
-      },
       {
         "facility_uuid": "8f35f78e-cced-4665-b9ee-d2e2a7576d77",
         "facility_id": 17742,

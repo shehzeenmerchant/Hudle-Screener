@@ -4,13 +4,11 @@ import ssl
 import sys
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
-from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from hudle_client import HudleClient
-from search import format_time_12hr, normalize_zone, parse_date, parse_time_window, search_slots
+from search import format_time_12hr, normalize_zone, parse_date, search_slots
 from sync_catalog import load_cached_catalog
 
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), "config.json")
