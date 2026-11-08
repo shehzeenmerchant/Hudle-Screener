@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/webhook.py": {
+      "includeFiles": "*.py, venues_cache.json"
+    }
+  },
   "rewrites": [
     { "source": "/api/webhook", "destination": "/api/webhook.py" },
     { "source": "/", "destination": "/api/webhook.py" }

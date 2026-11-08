@@ -29,4 +29,3 @@ scratch/
 test_*.py
 benchmark_*.py
 find_9pm_tonight.py
-classify_zones.py

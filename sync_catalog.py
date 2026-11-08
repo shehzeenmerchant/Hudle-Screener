@@ -95,9 +95,19 @@ def sync_mumbai_padel_catalog(client: HudleClient = None, verbose: bool = True) 
     return catalog
 
 def load_cached_catalog() -> list:
-    if os.path.exists(CACHE_FILE):
-        with open(CACHE_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+    possible_paths = [
+        CACHE_FILE,
+        os.path.join(os.getcwd(), "venues_cache.json"),
+        os.path.join(os.path.dirname(__file__), "..", "venues_cache.json"),
+        "/var/task/venues_cache.json"
+    ]
+    for p in possible_paths:
+        if os.path.exists(p):
+            try:
+                with open(p, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
     return []
 
 if __name__ == "__main__":
