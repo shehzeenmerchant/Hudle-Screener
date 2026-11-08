@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment and sensitive keys
+.env
+.env.local
+
+# Scratch and test files
+scratch/
+test_*.py
+benchmark_*.py
+find_9pm_tonight.py
+classify_zones.py

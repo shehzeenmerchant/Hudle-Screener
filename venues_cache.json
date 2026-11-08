@@ -1,0 +1,1423 @@
+[
+  {
+    "venue_id": "8a5ae3a7-2c18-4dc5-bd46-1960d243d8dd",
+    "name": "Racquet Republic | Sacred Heart Khar",
+    "slug": "courts-at-heart-santacruz-west",
+    "share_url": "https://hudle.in/venues/courts-at-heart-santacruz-west/666893",
+    "address": "Inside Sacred Heart Boys High School, Swami Vivekanand Rd, Khar, Ram Krishna Nagar, Santacruz (West), Mumbai, Maharashtra.",
+    "rating": "4",
+    "activity_id": 2126,
+    "activity_name": "Padel (Smart Court)",
+    "courts": [
+      {
+        "facility_uuid": "84c365fa-2e7c-4a61-977e-0066a13bab22",
+        "facility_id": 21122,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 1250
+      },
+      {
+        "facility_uuid": "855cb785-823c-4940-8142-526cb1de2429",
+        "facility_id": 21125,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 1250
+      },
+      {
+        "facility_uuid": "716f3d56-8941-4785-b3eb-26dfe9b3252d",
+        "facility_id": 21131,
+        "name": "Smart Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 1250
+      },
+      {
+        "facility_uuid": "716f3d56-8941-4785-b3eb-26dfe9b3252d",
+        "facility_id": 21131,
+        "name": "Smart Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 1250
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "31463bd0-cbba-4f77-9858-16668e39268c",
+    "name": "Urban Sports Zone Padel and Pickleball l GTC Vile Parle",
+    "slug": "urban-sports-zone-padel-and-pickleball-l-gtc-vile-parle",
+    "share_url": "https://hudle.in/venues/urban-sports-zone-padel-and-pickleball-l-gtc-vile-parle/881165",
+    "address": "Urban Padel and Pickleball, 4th floor, Golden Tobacco House Limited, Swami Vivekanand Rd, Navpada, Vile Parle West, Mumbai, Maharashtra 400056.",
+    "rating": "2",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "02e38c9c-6e32-47dd-8769-c3875f1b5af6",
+        "facility_id": 18289,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "86c16c83-4acc-40bc-b944-001354ed6059",
+        "facility_id": 18290,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "c48d9b43-3dd3-4a4b-8238-426ec2e41979",
+        "facility_id": 18291,
+        "name": "Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 750
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "83466444-a834-49ec-aabd-294ad367002c",
+    "name": "Urban Sports Padel l Andheri West",
+    "slug": "urban-sports-padel-l-andheri-west",
+    "share_url": "https://hudle.in/venues/urban-sports-padel-l-andheri-west/842346",
+    "address": "Urban Padel, 101, Sidhudurg Bhavan Roof top, Anjan Marg, RTO Rd, Suresh Nagar, Andheri West, Mumbai, Maharashtra 400053.",
+    "rating": "0.5",
+    "activity_id": 1812,
+    "activity_name": "Padel (Outdoor)",
+    "courts": [
+      {
+        "facility_uuid": "ba6d1f11-df8d-436d-92b6-46173a1dd85e",
+        "facility_id": 18331,
+        "name": "Padel Court",
+        "slot_length": 60,
+        "price_onwards": 800
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "2a118a6f-044c-479b-8890-57c23f3e4e31",
+    "name": "Urban Sports Padel & Pickleball | Vikhroli West",
+    "slug": "urban-sports-padel-pickleball-vikhroli-west",
+    "share_url": "https://hudle.in/venues/urban-sports-padel-pickleball-vikhroli-west/646745",
+    "address": "Urban Padel & Pickleball, BAR BANK - Vikhroli West, Veer Sawarkar Marg, near Kailash Industrial Estate, HMPL Surya Nagar, Vikhroli West, Mumbai, Maharashtra",
+    "rating": "4.5",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "c182815f-832f-428d-aeaa-aae71838e195",
+        "facility_id": 18332,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 1000
+      },
+      {
+        "facility_uuid": "7b26af99-1f8b-458c-bfaf-8f0ca99090e7",
+        "facility_id": 23251,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "eastern_suburbs",
+    "zone_label": "Eastern Suburbs & Central"
+  },
+  {
+    "venue_id": "a61ba760-78e1-40fc-a1d9-97523d80da55",
+    "name": "Urban Sports Zone Padel And Pickleball l Mahalaxmi",
+    "slug": "urban-sports-zone-padel-and-pickleball-l-mahalaxmi",
+    "share_url": "https://hudle.in/venues/urban-sports-zone-padel-and-pickleball-l-mahalaxmi/543176",
+    "address": "Urban Padel And Pickleball, Finland International School, SK Rathod Road, Arya Nagar, Dr Babasaheb Ambedkar Colony, Mahalakshmi, Mumbai, Maharashtra.",
+    "rating": "0.5",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "2acab5d8-66d6-4aa7-9478-cd0f2527c174",
+        "facility_id": 18334,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1500
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "9672dd36-168a-40d8-85be-28d7bef3543b",
+    "name": "Courtside Padel Social Club Worli",
+    "slug": "courtside-padel-social-club-worli",
+    "share_url": "https://hudle.in/venues/courtside-padel-social-club-worli/302410",
+    "address": "Courtside - Padel Social Club, Atria-The Millennium Mall, Doctor Annie Besant Road, above Inox, Lotus Colony, Worli, Mumbai, Maharashtra",
+    "rating": "2.75",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "c598e535-9980-47d0-a0eb-ebaf5603b367",
+        "facility_id": 18359,
+        "name": "Isprava Court",
+        "slot_length": 30,
+        "price_onwards": 2250
+      },
+      {
+        "facility_uuid": "d6121c94-0fc9-4368-a93d-edc26583c2cd",
+        "facility_id": 18360,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 2250
+      },
+      {
+        "facility_uuid": "b866b70f-c2a9-4ea0-91bf-1a95f67c15c3",
+        "facility_id": 18361,
+        "name": "Court 3",
+        "slot_length": 30,
+        "price_onwards": 2250
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "912ff393-2a9a-4e73-8318-eac97a4f3250",
+    "name": "Padel Edition (MAZGAON)",
+    "slug": "padel-edition",
+    "share_url": "https://hudle.in/venues/padel-edition/543846",
+    "address": "E shed/grain depot, Reay Road, Sewri, Mumbai, Maharashtra",
+    "rating": "3.2619047619048",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "3468caf8-b425-4710-9e41-6c2d4ad4b511",
+        "facility_id": 18517,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "263dcbe8-b22a-456d-89b4-b3318d43e0b6",
+        "facility_id": 18519,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "49dacc80-7005-42e7-9ad7-f62d39a9d68a",
+        "facility_id": 18520,
+        "name": "Court (1v1 Singles)",
+        "slot_length": 30,
+        "price_onwards": 750
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "c7555a38-05f8-42a0-bf82-88fc3d7f96f8",
+    "name": "The Cricket Club Of India",
+    "slug": "the-cricket-club-of-india",
+    "share_url": "https://hudle.in/venues/the-cricket-club-of-india/180016",
+    "address": "Stadium House, Churchgate, Mumbai 400020",
+    "rating": "4.765625",
+    "activity_id": 2055,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "078773a2-0837-46c2-870d-0e8f5587f2a4",
+        "facility_id": 19023,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 200
+      },
+      {
+        "facility_uuid": "fb9c7c54-1108-41e1-a19e-e773dc7b66b3",
+        "facility_id": 19024,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 200
+      },
+      {
+        "facility_uuid": "ce03ad87-237f-46e7-bf4d-3b6220efd71e",
+        "facility_id": 19025,
+        "name": "Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 200
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "6ae2c2f2-4002-4f67-a4d9-30c7e5de4547",
+    "name": "Super Sport Park Padel | Mulund West",
+    "slug": "super-sports-park-padel-mulund-west",
+    "share_url": "https://hudle.in/venues/super-sports-park-padel-mulund-west/489354",
+    "address": "Vasantdada Patil Shikshan Sansthan Pandurang Vidyalay, Vikas Paradise Tower I, Salpadevi Pada, L.B.S, Mumbai, Maharashtra 400080",
+    "rating": "0.5",
+    "activity_id": 1637,
+    "activity_name": "Padel Court",
+    "courts": [
+      {
+        "facility_uuid": "a0142f05-2a1b-4c83-b2c4-26614b5b8d53",
+        "facility_id": 19283,
+        "name": "Padel Racquet",
+        "slot_length": 30,
+        "price_onwards": 75
+      },
+      {
+        "facility_uuid": "0eabe1c1-e09a-4c30-af43-f4282858c388",
+        "facility_id": 19279,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 500
+      },
+      {
+        "facility_uuid": "b8f9b863-4bd2-472b-bdcd-c1f38f0ad32b",
+        "facility_id": 19280,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 500
+      }
+    ],
+    "zone": "eastern_suburbs",
+    "zone_label": "Eastern Suburbs & Central"
+  },
+  {
+    "venue_id": "e4853477-4718-42d1-896a-b15fdeb44232",
+    "name": "TSG x Global Sports Padel | Andheri Sports Complex",
+    "slug": "tsg-x-global-sports-padel-andheri-sports-complex",
+    "share_url": "https://hudle.in/venues/tsg-x-global-sports-padel-andheri-sports-complex/828393",
+    "address": "TSG x Global Sports | Andheri Sports Complex Padel, JP Rd, Sahayog Society, Munshi Nagar, Andheri West, Mumbai, Maharashtra 400058, India",
+    "rating": "1.4",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "2fe4e174-c058-4538-8737-4995faa72bdd",
+        "facility_id": 19347,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 1000
+      },
+      {
+        "facility_uuid": "fe06d5a7-287f-4754-bb16-11b5d93501eb",
+        "facility_id": 19348,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "d330cd66-a0af-4d93-9fc7-e03b761fc8f7",
+    "name": "Padelverse | Ranibaug",
+    "slug": "padelverse-byculla",
+    "share_url": "https://hudle.in/venues/padelverse-byculla/143992",
+    "address": "Padelverse Ranibaug, AG Pawar Marg, New Patra Chawl, Dhaku Prabhuchi Wadi, Byculla East, Byculla, Mumbai, Maharashtra",
+    "rating": "4.625",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "c9092372-221b-4234-8776-d461b51a1181",
+        "facility_id": 20033,
+        "name": "Padel Racquet",
+        "slot_length": 30,
+        "price_onwards": 100
+      },
+      {
+        "facility_uuid": "ac12fc63-eb88-49de-80cf-b49d6473ebf2",
+        "facility_id": 20041,
+        "name": "Ball Machine",
+        "slot_length": 30,
+        "price_onwards": 375
+      },
+      {
+        "facility_uuid": "5b3c5198-065f-49a9-8081-75c565f6b35e",
+        "facility_id": 20029,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "3f8fcf2d-b9ea-45c3-bddf-64b79e35ca70",
+        "facility_id": 20030,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "f9403c3b-3ec6-4839-91cb-08cfb79bf944",
+        "facility_id": 20031,
+        "name": "Court 3",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "848d53df-b806-4d5d-b289-be91bff7b220",
+        "facility_id": 20032,
+        "name": "Court 4",
+        "slot_length": 30,
+        "price_onwards": 750
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "7d9c03ee-29c2-45c5-a9ab-988fb5273439",
+    "name": "The Sports Foundry | Bhandup",
+    "slug": "the-sports-foundry-at-bhandup",
+    "share_url": "https://hudle.in/venues/the-sports-foundry-at-bhandup/947046",
+    "address": "Rolex Metal Industries Compound, Village Road, LBS Marg, Bhandup West, Mumbai, Maharashtra - 400078",
+    "rating": "4.2627118644068",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "4c1c512b-d4af-4ed8-b630-3dd5e9822aea",
+        "facility_id": 20494,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "eastern_suburbs",
+    "zone_label": "Eastern Suburbs & Central"
+  },
+  {
+    "venue_id": "b4465c13-0f5d-4f80-bb1b-0e89e830bfab",
+    "name": "Hiray College Padel & Pickleball Park | Bandra",
+    "slug": "hiray-college-padel-pickleball-park-bandra",
+    "share_url": "https://hudle.in/venues/hiray-college-padel-pickleball-park-bandra/381076",
+    "address": "Hiray College, near Kherwadi Police Station, next to New English School Marg, Government Colony, Bandra East, Mumbai, Maharashtra",
+    "rating": "0.8",
+    "activity_id": 1637,
+    "activity_name": "Padel Court",
+    "courts": [
+      {
+        "facility_uuid": "7f85d6fd-132d-4521-a2ec-7074c4839a74",
+        "facility_id": 20966,
+        "name": "Padel",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "c65f0551-8666-457b-a993-4cb56d1e00d7",
+    "name": "Urban Sports Padel l Juhu",
+    "slug": "urban-sports-padel-l-juhu",
+    "share_url": "https://hudle.in/venues/urban-sports-padel-l-juhu/170537",
+    "address": "Urban Padel, Plot No. 44, C. P Goenka International School Compound, Gulmohar Road, JVPD Scheme, Juhu, Vile Parle West, Mumbai, Maharashtra 400049",
+    "rating": null,
+    "activity_id": 1812,
+    "activity_name": "Padel (Outdoor)",
+    "courts": [
+      {
+        "facility_uuid": "3ec8b947-7ff7-49e4-b74b-a3bc1bd7ee85",
+        "facility_id": 18279,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1500
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "f688f6f1-5ebc-424f-87e8-be6abc331ad9",
+    "name": "Padel 360 Privé | Lower Parel",
+    "slug": "padel-360-prive-lower-parel",
+    "share_url": "https://hudle.in/venues/padel-360-prive-lower-parel/628099",
+    "address": "Padel 360, Prakash Cotton Mills Ltd., Shankar Rao Naram Path, Lower Parel West, Lower Parel, Mumbai, Maharashtra",
+    "rating": "3.875",
+    "activity_id": 2134,
+    "activity_name": "Smart Padel (AC Indoor)",
+    "courts": [
+      {
+        "facility_uuid": "462fd165-7802-4629-be13-23b0806a56db",
+        "facility_id": 22336,
+        "name": "Padel Racquet",
+        "slot_length": 60,
+        "price_onwards": 200
+      },
+      {
+        "facility_uuid": "1c31e134-9d8f-4a9f-b086-479d73a22f58",
+        "facility_id": 22330,
+        "name": "Court 1 Padel",
+        "slot_length": 60,
+        "price_onwards": 4500
+      },
+      {
+        "facility_uuid": "8056471e-7567-427e-9656-72d09dccc2a9",
+        "facility_id": 22331,
+        "name": "Court 2 Padel",
+        "slot_length": 60,
+        "price_onwards": 4500
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "9d52d00f-74f2-4f98-9d6d-8cc9fedd4331",
+    "name": "Players Sports Arena | Goregaon East",
+    "slug": "players-sports-arena-goregaon-east",
+    "share_url": "https://hudle.in/venues/players-sports-arena-goregaon-east/685593",
+    "address": "New Satguru Nanik industrial state, Geetanjali Railway Colony, Ram Nagar, Jogeshwari East, East, Mumbai, Maharashtra",
+    "rating": null,
+    "activity_id": 1637,
+    "activity_name": "Padel Court",
+    "courts": [
+      {
+        "facility_uuid": "ded2b14d-3a3d-4952-bf1e-52a216a8a634",
+        "facility_id": 22791,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 800
+      },
+      {
+        "facility_uuid": "55af04b1-95d3-46cd-86cf-c7907ecc6d71",
+        "facility_id": 22792,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 800
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "1321ae58-c6e5-46d2-9164-3245e22b639a",
+    "name": "Racquet Republic | Dilkhush School Juhu",
+    "slug": "dilkhush-juhu",
+    "share_url": "https://hudle.in/venues/dilkhush-juhu/920703",
+    "address": "Dilkhush Special School, Juhu Tara Road, Airport Area, Juhu, Mumbai, Maharashtra",
+    "rating": null,
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "5e0f3634-e484-4e3a-8d41-e39ab72db276",
+        "facility_id": 23795,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 1500
+      },
+      {
+        "facility_uuid": "b23110de-e0f0-48f4-96b2-85e40dcd39ed",
+        "facility_id": 23796,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 1500
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "af6f1a66-b7e8-43bf-82bd-fad7857e1e52",
+    "name": "Urban Sports Zone GTC Padel | Vile Parle",
+    "slug": "urban-sports-zone-gtc-padel-and-pickleball-vile-parle",
+    "share_url": "https://hudle.in/venues/urban-sports-zone-gtc-padel-and-pickleball-vile-parle/868282",
+    "address": "Golden Tobacco Limited, Swami Vivekanand Rd, Indira Nagar, Vile Parle West, Mumbai, Maharashtra",
+    "rating": null,
+    "activity_id": 1812,
+    "activity_name": "Padel (Outdoor)",
+    "courts": [
+      {
+        "facility_uuid": "7982a45c-ceba-403b-87de-15f647660f91",
+        "facility_id": 23804,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 775
+      },
+      {
+        "facility_uuid": "571e5547-53e1-4cca-84cc-92017e3f2e49",
+        "facility_id": 23805,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 775
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "5b4b7dc3-0ed6-4592-a2e3-d5c7899dbe30",
+    "name": "Jain Gymkhana | Marine Lines",
+    "slug": "jain-gymkhana-marine-lines",
+    "share_url": "https://hudle.in/venues/jain-gymkhana-marine-lines/700116",
+    "address": "Jain Gymkhana, Netaji Subhash Chandra Bose Road, Marine Lines, Mumbai, Maharashtra",
+    "rating": null,
+    "activity_id": 1812,
+    "activity_name": "Padel (Outdoor)",
+    "courts": [
+      {
+        "facility_uuid": "3ac97d1a-5d31-4536-9ae6-d3c149828bba",
+        "facility_id": 23860,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 1000
+      },
+      {
+        "facility_uuid": "56e9a6b0-defe-46f0-86c3-ee3fb7f8ae4e",
+        "facility_id": 23861,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "f1adf6ef-ef4b-4f89-8974-79a50f1f70e6",
+    "name": "Urban Sports | Bandra East",
+    "slug": "urban-sports-bandra-east",
+    "share_url": "https://hudle.in/venues/urban-sports-bandra-east/867455",
+    "address": "Rajashri Shahu Maharaj Boys' Hostel, Sharda Devi Road, near New English School, Government Colony, Subhash Nagar, Bandra East, Mumbai, Maharashtra",
+    "rating": null,
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "537f75b8-6e88-48dc-8507-4e22f7e8af2e",
+        "facility_id": 23979,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 1250
+      },
+      {
+        "facility_uuid": "8459a242-d51e-4962-9af7-e79a7f86bbc5",
+        "facility_id": 23980,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 1250
+      },
+      {
+        "facility_uuid": "37497d0c-f000-4b39-b33e-a4bc55d2bd08",
+        "facility_id": 23981,
+        "name": "Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 1250
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "cab4c57a-3028-47d6-9ae7-16d4a75a5a16",
+    "name": "D Arena Sports | Andheri East",
+    "slug": "d-arena-sports-andheri-east",
+    "share_url": "https://hudle.in/venues/d-arena-sports-andheri-east/696965",
+    "address": "Commercial Complex, D Arena Sports Rooftop, Building 16A, International Airport, Samhita Rd, Maharashtra 400072",
+    "rating": null,
+    "activity_id": 1812,
+    "activity_name": "Padel (Outdoor)",
+    "courts": [
+      {
+        "facility_uuid": "a52f63cd-2e4f-4e7b-9903-bfec28c117b2",
+        "facility_id": 24522,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 975
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "b3652d10-9605-41c6-aa98-708cb19e3018",
+    "name": "TSG Padel Arena | Country Club Andheri West",
+    "slug": "tsg-padel-arena-country-club-andheri-west",
+    "share_url": "https://hudle.in/venues/tsg-padel-arena-country-club-andheri-west/662491",
+    "address": "Country Club, Veera Desai Road, opp. Kia park building, Andheri, Prathmesh Complex, Andheri West, Mumbai, Maharashtra",
+    "rating": null,
+    "activity_id": 1637,
+    "activity_name": "Padel Court",
+    "courts": [
+      {
+        "facility_uuid": "9ea7cb48-d082-4df8-9c62-9e9452b8d832",
+        "facility_id": 24571,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "3ef95317-8d64-44e4-928f-508c66edba6b",
+        "facility_id": 24572,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "08552a81-1b82-452b-a75e-0f2d36585681",
+        "facility_id": 24573,
+        "name": "Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 750
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "43692858-adde-48a9-a2ca-dc4c93ec12a2",
+    "name": "TSG Sports Arena | Dadar East",
+    "slug": "tsg-sports-arena-dadar-east",
+    "share_url": "https://hudle.in/venues/tsg-sports-arena-dadar-east/338220",
+    "address": "135/B, Lakshami Narayan Rd, Hindu Colony, Dadar, Mumbai, Maharashtra 400014",
+    "rating": null,
+    "activity_id": 1637,
+    "activity_name": "Padel Court",
+    "courts": [
+      {
+        "facility_uuid": "b403a2f2-f2ca-404c-92f0-4528bcd370ef",
+        "facility_id": 24574,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 1000
+      },
+      {
+        "facility_uuid": "6b48a24b-35d4-4047-81cc-35d3789ee55f",
+        "facility_id": 24575,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "d59465f6-052f-427f-9a0b-7fcf368c3c95",
+    "name": "Inbox Woods X TSG X Players Sports Arena (South Park)",
+    "slug": "inbox-woods-x-tsg-x-players-sports-arena-south-park",
+    "share_url": "https://hudle.in/venues/inbox-woods-x-tsg-x-players-sports-arena-south-park/707203",
+    "address": "INBOX WOODS SPORTS ARENA - SOUTH PARK, Swami Ayyappa Temple Marg, Bangur Nagar, Goregaon West, Mumbai, Maharashtra",
+    "rating": "2.625",
+    "activity_id": 1637,
+    "activity_name": "Padel Court",
+    "courts": [
+      {
+        "facility_uuid": "a2a1b5bf-db2c-4d55-9aa5-ed020d533f4a",
+        "facility_id": 24576,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 900
+      },
+      {
+        "facility_uuid": "4f476443-0f2b-4217-a218-e48c105d9d25",
+        "facility_id": 24577,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 900
+      },
+      {
+        "facility_uuid": "5d409580-acfd-4a84-aee4-91478e5947a2",
+        "facility_id": 24578,
+        "name": "Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 900
+      },
+      {
+        "facility_uuid": "47a8dcb8-5f8c-4001-bc2b-34531e57def0",
+        "facility_id": 24579,
+        "name": "Padel Court 4",
+        "slot_length": 30,
+        "price_onwards": 900
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "ed9be2dd-1ae2-46da-a681-c40fc63e0972",
+    "name": "Urban Sports Zone | Kandivali West",
+    "slug": "urban-sports-zone-kandivali-west",
+    "share_url": "https://hudle.in/venues/urban-sports-zone-kandivali-west/185546",
+    "address": "Urban sports zone Thakur Kandivali, C.T.S, 1299, Chatrapati Shivaji Maharaj Rd, off M.G.Road, New Saibaba Nagar, Hemu Colony, Bhagat Colony, Kandivali West, Mumbai, Maharashtra 400067",
+    "rating": "1.75",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "b8ef4097-909e-4979-a57a-76661a76f4a7",
+        "facility_id": 24626,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 500
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "cfc18b0c-527c-48d5-acd0-f85490d2a446",
+    "name": "Bombay Gymkhana | Members Only",
+    "slug": "bombay-gymkhana-members-only",
+    "share_url": "https://hudle.in/venues/bombay-gymkhana-members-only/255944",
+    "address": "Mahatma Gandhi Road, Opp Fashion Street,\r\nAzad Maidan, Fort, Mumbai, Maharashtra 400001",
+    "rating": "5",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "a86b7802-8355-4f30-961c-654df619461a",
+        "facility_id": 11912,
+        "name": "Court 1 (Old Court)",
+        "slot_length": 30,
+        "price_onwards": 10
+      },
+      {
+        "facility_uuid": "17cdb721-8af8-4319-8340-f650d6b93607",
+        "facility_id": 18871,
+        "name": "Court 2 (New Court)",
+        "slot_length": 30,
+        "price_onwards": 10
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "da29aee3-5618-4a95-b9b7-2b1073fb0a65",
+    "name": "Willingdon Outdoor Sports Arena | Maali Khata",
+    "slug": "willingdon-sports-club",
+    "share_url": "https://hudle.in/venues/willingdon-sports-club/539638",
+    "address": "Willingdon Outdoor Sports Arena at the Maali Khata, Bodyguard Lane, Haji Ali, Mumbai 400 011",
+    "rating": "4.7647058823529",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "a5e6cd1e-6b73-4ab5-90a6-3e7d18b5cad0",
+        "facility_id": 10403,
+        "name": "Padel Court 3",
+        "slot_length": 30,
+        "price_onwards": 200
+      },
+      {
+        "facility_uuid": "a4a90567-9202-4f40-a10a-7e12f8bb47cc",
+        "facility_id": 22364,
+        "name": "Padel Court 4",
+        "slot_length": 30,
+        "price_onwards": 200
+      },
+      {
+        "facility_uuid": "a1725551-77be-4cf3-b296-107c4c6b7da9",
+        "facility_id": 5845,
+        "name": "Padel Court 1",
+        "slot_length": 30,
+        "price_onwards": 400
+      },
+      {
+        "facility_uuid": "62a7ec08-4721-4a33-b68a-ea53b2ee975c",
+        "facility_id": 5847,
+        "name": "Padel Court 2",
+        "slot_length": 30,
+        "price_onwards": 400
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "7d204b7b-8574-4ac7-823a-2f9d77789dc0",
+    "name": "NSCI Padel Club | Members Only",
+    "slug": "padelpark-nsci",
+    "share_url": "https://hudle.in/venues/padelpark-nsci/118119",
+    "address": "Lala Lajpatrai Marg, Lotus Colony, Worli, Mumbai, Maharashtra 400018",
+    "rating": "3.5384615384615",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "24073885-5158-4da6-8deb-883e057fc18b",
+        "facility_id": 7080,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 400
+      },
+      {
+        "facility_uuid": "e7c1e55a-dd5d-44d1-89c7-06939454cc35",
+        "facility_id": 7081,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 400
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "e4f0b7e4-cc3a-4ed1-b127-6c25957c8922",
+    "name": "Radio Club | Bombay Pickleball and Padel Club",
+    "slug": "radio-club-bombay-padel-club",
+    "share_url": "https://hudle.in/venues/radio-club-bombay-padel-club/329288",
+    "address": "157, Arthur Bunder rd, Apollo Bunder, Colaba 400001",
+    "rating": "4.2575757575758",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "78ccfdcf-b808-42f7-88e8-8bc66282c7f4",
+        "facility_id": 8695,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "b82d19f2-8690-4975-a5d1-5e9ab886e10d",
+    "name": "Padel 360 | Worli",
+    "slug": "padel-360-worli",
+    "share_url": "https://hudle.in/venues/padel-360-worli/496598",
+    "address": "Oricon Enterprises Ltd.\r\n1076, Dr. E. Moses Road, Worli,, Worli Naka, Upper Worli, Worli, Mumbai, Maharashtra 400018",
+    "rating": "4.0138888888889",
+    "activity_id": 2134,
+    "activity_name": "Smart Padel (AC Indoor)",
+    "courts": [
+      {
+        "facility_uuid": "ee9bac63-17f7-402a-af36-27799396bc93",
+        "facility_id": 12442,
+        "name": "Padel Racquet",
+        "slot_length": 60,
+        "price_onwards": 100
+      },
+      {
+        "facility_uuid": "c93e354e-afd1-43a1-ac95-b0d9098946a6",
+        "facility_id": 9265,
+        "name": "Court 1 Padel",
+        "slot_length": 60,
+        "price_onwards": 3600
+      },
+      {
+        "facility_uuid": "dc6616fa-8d06-48e0-a48e-1cd2c8171e78",
+        "facility_id": 12441,
+        "name": "Court 2 Padel",
+        "slot_length": 60,
+        "price_onwards": 3600
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "140573a8-6ce3-4bd7-800c-2ee3fe2645e8",
+    "name": "SkyPadel | Padel Tennis Federation | Sahara Star",
+    "slug": "skypadel-padel-tennis-federation-sahara-star",
+    "share_url": "https://hudle.in/venues/skypadel-padel-tennis-federation-sahara-star/880563",
+    "address": "Sahara Star Hotel, Nehru Rd, opp. Domestic Airport, Navpada, Vile Parle East, Vile Parle, Mumbai, Maharashtra 400099",
+    "rating": "3.4382716049383",
+    "activity_id": 1555,
+    "activity_name": "Padel (Court Booking)",
+    "courts": [
+      {
+        "facility_uuid": "507de288-980b-4906-9a2a-0693ebe939ea",
+        "facility_id": 9642,
+        "name": "Court 1 (Covered)",
+        "slot_length": 30,
+        "price_onwards": 1000
+      },
+      {
+        "facility_uuid": "1e2d71af-a690-4cd9-ad04-64f93a0fc79d",
+        "facility_id": 9643,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "7cf9daf6-f5ca-478c-b2dd-9de981152a8c",
+    "name": "Ace Padel Andheri",
+    "slug": "ace-padel-andheri-east",
+    "share_url": "https://hudle.in/venues/ace-padel-andheri-east/993497",
+    "address": "ACE PADEL ANDHERI, Mahakali Caves Road, opposite manika apartment, near satya sai baba temple close, MMRDA Colony, Andheri East, Mumbai, Maharashtra",
+    "rating": "4.8870967741935",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "224e81e2-39ec-48ab-a626-4720c4409cab",
+        "facility_id": 10459,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 800
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "ecfb2565-115a-46b6-ba6d-c0cdf1b543e4",
+    "name": "PadelPro Club | Xavier | Mahim",
+    "slug": "padelpro-club-xavier-mahim",
+    "share_url": "https://hudle.in/venues/padelpro-club-xavier-mahim/107004",
+    "address": "Xavier Institute of Engineering, Raheja Hospital Marg, Mahim, Mumbai, Maharashtra",
+    "rating": "3.3108108108108",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "0a7fd13f-33a9-4500-8688-27e0e97bd6c2",
+        "facility_id": 10941,
+        "name": "Racquet",
+        "slot_length": 30,
+        "price_onwards": 50
+      },
+      {
+        "facility_uuid": "d8bbdeee-298f-4303-ad3a-7b12b03e22ff",
+        "facility_id": 10940,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "756a61d5-5290-4f09-a6f2-947e1fb1d235",
+    "name": "The Wodehouse Gymkhana",
+    "slug": "the-wodehouse-gymkhana",
+    "share_url": "https://hudle.in/venues/the-wodehouse-gymkhana/939039",
+    "address": "Wodehouse Gymkhana, Maharshi Karve Road, Nariman Point, Mumbai, Maharashtra",
+    "rating": "4.8529411764706",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "7796f1fd-cc66-4f7e-80f5-8846cf5eb629",
+        "facility_id": 10978,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 236
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "67e60ad2-84d6-4bed-a3b8-271cd7e160d9",
+    "name": "Hurdles Padel | Ghatkopar",
+    "slug": "hurdles-padel-ghatkopar",
+    "share_url": "https://hudle.in/venues/hurdles-padel-ghatkopar/837122",
+    "address": "Shivaji Technical School, Next to SBI Bank, 90 Feet Road, Naidu Colony, Pant Nagar, Ghatkopar East, Mumbai.",
+    "rating": "4.4576271186441",
+    "activity_id": 1555,
+    "activity_name": "Padel (Court Booking)",
+    "courts": [
+      {
+        "facility_uuid": "df3edc05-2e40-4e8d-8324-5e62fb1c1390",
+        "facility_id": 11477,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 600
+      }
+    ],
+    "zone": "eastern_suburbs",
+    "zone_label": "Eastern Suburbs & Central"
+  },
+  {
+    "venue_id": "69f0b367-377b-4044-b2c3-30f34fe5b7be",
+    "name": "Palm Padickle | Andheri West",
+    "slug": "palm-padickle-andheri-west",
+    "share_url": "https://hudle.in/venues/palm-padickle-andheri-west/673090",
+    "address": "Sarita Lawns & Banquets, beside Good Shepherd Church, Gharkul Society, Indira Nagar, Four Bungalows, Andheri West, Mumbai, Maharashtra",
+    "rating": "4.1542553191489",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "0dff1a00-bc78-49ea-a3b6-beadca58c7a7",
+        "facility_id": 11484,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1250
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "89f44440-af13-4c9c-afa9-894dfae167f8",
+    "name": "BandrArcade | Taj Lands End Mumbai",
+    "slug": "bandrarcade-taj-lands-end-mumbai",
+    "share_url": "https://hudle.in/venues/bandrarcade-taj-lands-end-mumbai/979503",
+    "address": "Taj Lands End, Mumbai, Byramji Jeejeebhoy Road, opp. ICICI Bank, Mount Mary, Bandra West, Mumbai, Maharashtra",
+    "rating": "3.4285714285714",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "44a0be45-c421-4a91-8e6a-589324b3e642",
+        "facility_id": 11569,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 2360
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "f598bca7-4947-4bf6-bd2d-f741e3abea82",
+    "name": "7Padel | PDP Malabar Hill",
+    "slug": "pdp-padelpark",
+    "share_url": "https://hudle.in/venues/pdp-padelpark/618937",
+    "address": "Priyadarshini Park, Nepean Sea Rd, Malabar Hill, Mumbai, Maharashtra 400006",
+    "rating": "3.9814814814815",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "e04e0284-8a02-44c3-ab7b-d7593125dd8c",
+        "facility_id": 5401,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 1000
+      },
+      {
+        "facility_uuid": "d0670d76-57d1-4fe0-8358-05d156f79969",
+        "facility_id": 9656,
+        "name": "Court 2 (Sea Side)",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "a9d1863b-92fc-420a-b68a-45aac9685611",
+    "name": "PickPad by AIM Sports | Goregaon West",
+    "slug": "pickpad-by-aim-sports-goregaon-west",
+    "share_url": "https://hudle.in/venues/pickpad-by-aim-sports-goregaon-west/850888",
+    "address": "3rd Floor, Timestar House, 12, Swami Vivekananda Rd, above Infiniti Hospital, Udyog Nagar, Goregaon West, Mumbai, Maharashtra 400062",
+    "rating": "3.71875",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "a9eee8f4-74de-4289-b31f-2d5866c3b0ea",
+        "facility_id": 12961,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1000
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "7155bd56-22c4-4170-969a-fddf0467cec9",
+    "name": "Club De Padel | Heera Panna Mall | Padel Tennis Federation",
+    "slug": "padel-tennis-federation-heera-panna-mall",
+    "share_url": "https://hudle.in/venues/padel-tennis-federation-heera-panna-mall/860964",
+    "address": "3rd Floor Terrace, Heera Panna Mall, Oshiwara Police Station Rd, Mhada Colony, Andheri West, Mumbai.",
+    "rating": "4.5",
+    "activity_id": 1555,
+    "activity_name": "Padel (Court Booking)",
+    "courts": [
+      {
+        "facility_uuid": "01b64df2-3ce6-49a3-ad18-e5b919adf54a",
+        "facility_id": 13024,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 750
+      },
+      {
+        "facility_uuid": "b04d48cd-2f25-403b-943c-49816ea6a25a",
+        "facility_id": 13025,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 750
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "e4b2aa78-6961-4dbb-a79f-731d53a23fa8",
+    "name": "Padel Project | Powai | Supreme Business Park",
+    "slug": "padel-project-powai-supreme-business-park",
+    "share_url": "https://hudle.in/venues/padel-project-powai-supreme-business-park/172755",
+    "address": "Padel Project/High Rock, S4, A wing, Supreme Business park, Hiranandani Gardens, next to Gold's Gym Powai, 400076",
+    "rating": "4.8557692307692",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "8cf9929b-e402-45e0-bac4-b90fef727bf9",
+        "facility_id": 13042,
+        "name": "Padel Court",
+        "slot_length": 60,
+        "price_onwards": 2500
+      }
+    ],
+    "zone": "eastern_suburbs",
+    "zone_label": "Eastern Suburbs & Central"
+  },
+  {
+    "venue_id": "50e135a9-a583-41e8-b202-be2da69b63a4",
+    "name": "Ace Padel Ball | Bandra West",
+    "slug": "ace-padel-ball-bandra-west",
+    "share_url": "https://hudle.in/venues/ace-padel-ball-bandra-west/149907",
+    "address": "stella maris, road, Bandra West, Mumbai, Maharashtra 400050",
+    "rating": "3.2142857142857",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "66ed42f5-c271-4ee2-9568-4f679ed1e242",
+        "facility_id": 13117,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1500
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "d0298484-573b-4aef-b78c-7e877ab0448d",
+    "name": "Breach Candy Swimming Bath Trust | Members Only",
+    "slug": "breach-candy-swimming-bath-trust",
+    "share_url": "https://hudle.in/venues/breach-candy-swimming-bath-trust/650577",
+    "address": "Breach Candy Swimming Bath Trust, Bhulabhai Desai Marg, Breach Candy, Cumballa Hill, Mumbai, Maharashtra",
+    "rating": "5",
+    "activity_id": 1555,
+    "activity_name": "Padel (Court Booking)",
+    "courts": [
+      {
+        "facility_uuid": "af33abde-7308-4a46-bca1-d9ceebf5eccc",
+        "facility_id": 14316,
+        "name": "Court 1",
+        "slot_length": 30,
+        "price_onwards": 236
+      },
+      {
+        "facility_uuid": "d8e77f6b-d583-473b-b167-2d0936a556d8",
+        "facility_id": 14440,
+        "name": "Court 2",
+        "slot_length": 30,
+        "price_onwards": 944
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "68a8c6d0-b287-412e-b93b-d6bccda98017",
+    "name": "Serve Society Kohinoor | Dadar West",
+    "slug": "serve-society-kohinoor-dadar-west",
+    "share_url": "https://hudle.in/venues/serve-society-kohinoor-dadar-west/351979",
+    "address": "6th floor, West Tower Terrace, Kohinoor Square, N.C. Kelkar Marg, Ram Ganesh Gadkari Chowk, Dadar, W, Shivaji Park, Mumbai, Maharashtra 400028",
+    "rating": "4.4444444444444",
+    "activity_id": 1812,
+    "activity_name": "Padel (Outdoor)",
+    "courts": [
+      {
+        "facility_uuid": "38aab321-461d-4313-9a8e-012d5c5ef16e",
+        "facility_id": 15092,
+        "name": "Court 1",
+        "slot_length": 60,
+        "price_onwards": 2400
+      },
+      {
+        "facility_uuid": "8c4831c8-0935-4a20-9934-29e5766d6f3d",
+        "facility_id": 15093,
+        "name": "Court 2",
+        "slot_length": 60,
+        "price_onwards": 2400
+      },
+      {
+        "facility_uuid": "3b7755c5-38c5-4105-bfc7-1e4db631e8a3",
+        "facility_id": 15094,
+        "name": "Court 3",
+        "slot_length": 60,
+        "price_onwards": 2400
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "782e7d09-8f9e-404d-90a7-7a809b90ddb7",
+    "name": "Epic Play | Lokhandwala",
+    "slug": "epic-play-lokhandwala",
+    "share_url": "https://hudle.in/venues/epic-play-lokhandwala/110913",
+    "address": "Plot no.7, P Tandon Marg, between Runwal Elegante and Royal Accord 3 and 4, Lokhandwala, Andheri West, Mumbai.",
+    "rating": "4.8571428571429",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "eb987470-2032-4699-9347-d564f307c93a",
+        "facility_id": 18892,
+        "name": "Padel Racquet",
+        "slot_length": 30,
+        "price_onwards": 100
+      },
+      {
+        "facility_uuid": "6beebe0e-e03f-4977-b62d-f700052c2a03",
+        "facility_id": 15560,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1300
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "f857ef2e-075f-4ecb-a7ec-fee3cfc4aece",
+    "name": "Phoenix HSBC Racquet Club",
+    "slug": "phoenix-hsbc-racquet-club",
+    "share_url": "https://hudle.in/venues/phoenix-hsbc-racquet-club/543403",
+    "address": "Palladium Mall, Senapati Bapat Marg, Lower Parel, Mumbai.",
+    "rating": "4.7096774193548",
+    "activity_id": 2126,
+    "activity_name": "Padel (Smart Court)",
+    "courts": [
+      {
+        "facility_uuid": "12452039-f7ae-4d30-864f-66ab68454e20",
+        "facility_id": 16366,
+        "name": "Smart Court 1",
+        "slot_length": 60,
+        "price_onwards": 2000
+      },
+      {
+        "facility_uuid": "604e1627-1bef-4574-a0c6-5651e6924d89",
+        "facility_id": 16367,
+        "name": "Smart Court 2 (Celio)",
+        "slot_length": 60,
+        "price_onwards": 2000
+      },
+      {
+        "facility_uuid": "d22e89e2-ab6e-4a01-b990-03dcc29989db",
+        "facility_id": 16368,
+        "name": "Smart Court 3 (Tira)",
+        "slot_length": 60,
+        "price_onwards": 2000
+      },
+      {
+        "facility_uuid": "ee0e43ad-3a55-4678-acb6-4f7dbb05384a",
+        "facility_id": 16369,
+        "name": "Smart Court 4",
+        "slot_length": 60,
+        "price_onwards": 2000
+      },
+      {
+        "facility_uuid": "ef4e7eda-dc94-47e0-a2c5-4fde31e5d4f4",
+        "facility_id": 16370,
+        "name": "Smart Court 5 (SuperDry)",
+        "slot_length": 60,
+        "price_onwards": 2000
+      },
+      {
+        "facility_uuid": "bdbc1828-2baa-4b3d-87d3-9076e5f0e104",
+        "facility_id": 16371,
+        "name": "Smart Court 6 (Lacoste)",
+        "slot_length": 60,
+        "price_onwards": 2000
+      }
+    ],
+    "zone": "south_mumbai",
+    "zone_label": "South Mumbai"
+  },
+  {
+    "venue_id": "fa33f700-dfcf-4a15-89d7-f71120489357",
+    "name": "7Padel X Super Sport Park",
+    "slug": "super-sports-park-x-padel-park",
+    "share_url": "https://hudle.in/venues/super-sports-park-x-padel-park/639706",
+    "address": "St Theresa's High School, Road Number 24, Bandra West, Mumbai, Maharashtra",
+    "rating": "5",
+    "activity_id": 1397,
+    "activity_name": "Padel",
+    "courts": [
+      {
+        "facility_uuid": "802f1c7d-0e65-43ed-a4e3-66d41737836d",
+        "facility_id": 16740,
+        "name": "Padel Court",
+        "slot_length": 60,
+        "price_onwards": 3000
+      }
+    ],
+    "zone": "western_suburbs",
+    "zone_label": "Western Suburbs"
+  },
+  {
+    "venue_id": "8cf5c154-2996-459c-99d5-70d5c02aae84",
+    "name": "The CourtRoom | R Odeon - Pickle and Padel",
+    "slug": "the-courtroom-r-odeon-pickle-and-padel",
+    "share_url": "https://hudle.in/venues/the-courtroom-r-odeon-pickle-and-padel/706566",
+    "address": "R Odeon Mall, MHADA Colony, Pant Nagar, Ghatkopar East, Mumbai, Maharashtra",
+    "rating": "4.5886075949367",
+    "activity_id": 1907,
+    "activity_name": "Padel (Covered)",
+    "courts": [
+      {
+        "facility_uuid": "9d6250e3-65ea-4552-8fa2-7e034af879b6",
+        "facility_id": 17596,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 1100
+      }
+    ],
+    "zone": "eastern_suburbs",
+    "zone_label": "Eastern Suburbs & Central"
+  },
+  {
+    "venue_id": "0a364268-d4d0-42b2-aac8-dc9bfb07ac19",
+    "name": "The Urban Arena Padel & Pickleball",
+    "slug": "the-urban-arena-padel-pickleball",
+    "share_url": "https://hudle.in/venues/the-urban-arena-padel-pickleball/527066",
+    "address": "The Urban Arena: Padel & Pickleball, Saki Vihar Road, Ganesh Nagar, Marol, Powai, Mumbai, Maharashtra",
+    "rating": "0.5",
+    "activity_id": 1812,
+    "activity_name": "Padel (Outdoor)",
+    "courts": [
+      {
+        "facility_uuid": "2e2c0f5f-2b3f-4c11-a9c8-1496cc132fbc",
+        "facility_id": 20174,
+        "name": "Padel Racquet",
+        "slot_length": 30,
+        "price_onwards": 50
+      },
+      {
+        "facility_uuid": "19a0708f-7818-4b98-a07d-6509273ed549",
+        "facility_id": 19350,
+        "name": "Padel Ball",
+        "slot_length": 30,
+        "price_onwards": 100
+      },
+      {
+        "facility_uuid": "8f35f78e-cced-4665-b9ee-d2e2a7576d77",
+        "facility_id": 17742,
+        "name": "Padel Court",
+        "slot_length": 30,
+        "price_onwards": 750
+      }
+    ],
+    "zone": "eastern_suburbs",
+    "zone_label": "Eastern Suburbs & Central"
+  }
+]
