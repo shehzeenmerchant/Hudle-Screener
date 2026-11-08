@@ -114,13 +114,22 @@ def search_slots(
     print(f"🔎 Scanning slots across {len(catalog)} venues ({total_courts} courts) for {date_str}...")
 
     for v in catalog:
+        # Skip members-only clubs on general searches to keep queries fast and actionable
+        if "members only" in v.get("name", "").lower() and not venue_filter:
+            continue
+
         venue_id = v["venue_id"]
         venue_name = v["name"]
         share_url = v.get("share_url") or f"https://hudle.in/venues/{v.get('slug')}"
 
         for court in v.get("courts", []):
-            court_uuid = court["facility_uuid"]
             court_name = court["name"]
+            c_low = court_name.lower()
+            # Skip equipment rentals (racquets, balls, machines)
+            if any(k in c_low for k in ["racquet", "ball", "paddle", "machine"]):
+                continue
+
+            court_uuid = court["facility_uuid"]
 
             try:
                 slots = client.get_slots(venue_id, court_uuid, date_str)

@@ -1,7 +1,8 @@
 {
   "functions": {
     "api/webhook.py": {
-      "includeFiles": "*.py, venues_cache.json"
+      "includeFiles": "*.py, venues_cache.json",
+      "maxDuration": 60
     }
   },
   "rewrites": [

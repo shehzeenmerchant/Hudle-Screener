@@ -42,7 +42,7 @@ class TelegramBot:
         self.token = token.strip()
         self.api_url = f"https://api.telegram.org/bot{self.token}"
         self.last_update_id = 0
-        self.client = HudleClient(delay_between_requests=0.15)
+        self.client = HudleClient(delay_between_requests=0.03)
 
     def _api_call(self, method: str, data: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
         url = f"{self.api_url}/{method}"
