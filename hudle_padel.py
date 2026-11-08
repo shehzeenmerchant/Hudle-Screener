@@ -1,15 +1,34 @@
 #!/usr/bin/env python3
 import argparse
+import getpass
 import json
+import os
 import sys
 from datetime import datetime
 
-from search import parse_date, search_slots, display_slots_table
+from search import parse_date, search_slots, display_slots_table, normalize_zone
 from sync_catalog import sync_mumbai_padel_catalog, load_cached_catalog
+from hudle_client import HudleClient
+
+CONFIG_FILE = os.path.join(os.path.dirname(__file__), "config.json")
+
+def load_local_config() -> dict:
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_local_config(cfg: dict):
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(cfg, f, indent=2)
+    os.chmod(CONFIG_FILE, 0o600)
 
 def main():
     parser = argparse.ArgumentParser(
-        description="🎾 Hudle Mumbai Padel Slot Finder & Booking Tool",
+        description="🎾 Hudle Mumbai Padel Slot Finder, Sniper & Booking Tool",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""Examples:
   # Search all slots for tomorrow between 7 PM and 10 PM
@@ -18,11 +37,17 @@ def main():
   # Search only in Bandra or Khar with max price Rs 1500
   python hudle_padel.py search --date today --time 18:00-21:00 --venue bandra --max-price 1500
 
+  # Run Slot Sniper for prime slots (7-10 PM) with instant Telegram drop alerts
+  python hudle_padel.py sniper --zone south --date tomorrow --time 19:00-22:00
+
   # List all cached Mumbai Padel venues and courts
   python hudle_padel.py venues
 
   # Refresh the venue catalog
   python hudle_padel.py sync
+
+  # Log into your Hudle account for automated bookings
+  python hudle_padel.py login
 """
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
@@ -36,6 +61,19 @@ def main():
     search_p.add_argument("--max-price", "-p", type=float, default=None, help="Maximum price per slot in ₹")
     search_p.add_argument("--json", action="store_true", help="Output results in JSON format")
 
+    # Command: sniper
+    sniper_p = subparsers.add_parser("sniper", help="Run background monitor for cancellations & newly dropped slots")
+    sniper_p.add_argument("--date", "-d", default="tomorrow", help="Date: 'today', 'tomorrow', or 'YYYY-MM-DD' (default: tomorrow)")
+    sniper_p.add_argument("--time", "-t", default="19:00-22:00", help="Time window, e.g. '19:00-22:00' (default: 19:00-22:00)")
+    sniper_p.add_argument("--zone", "-z", choices=["south", "west", "east"], default=None, help="Filter by zone: 'south', 'west', or 'east'")
+    sniper_p.add_argument("--venue", "-v", default=None, help="Filter by venue name or area keyword")
+    sniper_p.add_argument("--max-price", "-p", type=float, default=None, help="Maximum price in ₹")
+    sniper_p.add_argument("--interval", "-i", type=int, default=60, help="Polling interval in seconds (default: 60)")
+    sniper_p.add_argument("--chat-id", "-c", default=None, help="Telegram Chat ID for alerts")
+    sniper_p.add_argument("--alert-existing", action="store_true", help="Alert on current slots as well")
+    sniper_p.add_argument("--once", action="store_true", help="Run a single scan and exit")
+    sniper_p.add_argument("--auto-book", action="store_true", help="Attempt auto-booking when slot drops")
+
     # Command: venues
     venues_p = subparsers.add_parser("venues", help="List all cached Mumbai Padel venues")
     venues_p.add_argument("--zone", "-z", choices=["south", "west", "east"], default=None, help="Filter by zone: 'south', 'west', or 'east'")
@@ -43,6 +81,9 @@ def main():
 
     # Command: sync
     sync_p = subparsers.add_parser("sync", help="Refresh/update the local venue catalog from Hudle")
+
+    # Command: login
+    login_p = subparsers.add_parser("login", help="Log into Hudle to save your auth token for bookings")
 
     args = parser.parse_args()
 
@@ -73,13 +114,50 @@ def main():
         else:
             display_slots_table(slots, target_date)
 
+    elif args.command == "sniper":
+        from sniper import SlotSniper, load_config
+        cfg = load_config()
+        try:
+            target_date = parse_date(args.date)
+        except ValueError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
+
+        bot_token = cfg.get("telegram_bot_token")
+        chat_id = args.chat_id or cfg.get("telegram_chat_id")
+        auth_token = cfg.get("hudle_auth_token")
+
+        sniper = SlotSniper(
+            date_str=target_date,
+            time_window=args.time,
+            zone=args.zone,
+            venue_query=args.venue,
+            max_price=args.max_price,
+            poll_interval=args.interval,
+            telegram_token=bot_token,
+            telegram_chat_id=chat_id,
+            alert_existing=args.alert_existing,
+            auto_book=args.auto_book,
+            auth_token=auth_token
+        )
+
+        if args.once:
+            slots = sniper.scan_once()
+            print(f"Scan complete for {target_date} ({args.time}): {len(slots)} matching slots open.")
+            from search import format_time_12hr
+            for s in slots:
+                t_s = format_time_12hr(s["start_time"])
+                t_e = format_time_12hr(s["end_time"])
+                print(f"  • {t_s} - {t_e} | ₹{int(s['price'])} | {s['venue_name']} ({s['court_name']})")
+        else:
+            sniper.run()
+
     elif args.command == "venues":
         catalog = load_cached_catalog()
         if not catalog:
             print("No cached venues found. Run 'python hudle_padel.py sync' first.")
             return
 
-        from search import normalize_zone
         if getattr(args, "zone", None):
             norm_z = normalize_zone(args.zone)
             catalog = [v for v in catalog if v.get("zone") == norm_z]
@@ -101,6 +179,28 @@ def main():
 
     elif args.command == "sync":
         sync_mumbai_padel_catalog()
+
+    elif args.command == "login":
+        print("🔐 Hudle Authentication Login")
+        email = input("Hudle Registered Email: ").strip()
+        password = getpass.getpass("Hudle Password: ").strip()
+
+        client = HudleClient()
+        try:
+            res = client.login(email, password)
+            token = res.get("token") or res.get("data", {}).get("token")
+            if token:
+                cfg = load_local_config()
+                cfg["hudle_auth_token"] = token
+                save_local_config(cfg)
+                user_name = res.get("data", {}).get("name") or email
+                print(f"✅ Success! Logged in as {user_name}.")
+                print(f"🔑 Auth token saved securely to config.json.")
+            else:
+                msg = res.get("message") or res.get("errors") or "Authentication failed"
+                print(f"❌ Login failed: {msg}")
+        except Exception as e:
+            print(f"❌ Login error: {e}")
 
 if __name__ == "__main__":
     main()

@@ -74,6 +74,7 @@ class TelegramBot:
             {"command": "west", "description": "Western Suburbs prime slots tomorrow (7-10 PM)"},
             {"command": "east", "description": "Eastern Suburbs prime slots tomorrow (7-10 PM)"},
             {"command": "slots", "description": "Search slots: /slots [zone/venue] [date] [time]"},
+            {"command": "sniper", "description": "Setup drop & cancellation alerts for your chat"},
             {"command": "venues", "description": "List venues: /venues [south/west/east]"},
             {"command": "help", "description": "Show usage instructions"}
         ]
@@ -112,6 +113,18 @@ class TelegramBot:
             ]
         }
         self.send_message(chat_id, text, reply_markup=keyboard)
+
+    def handle_sniper_info(self, chat_id: int):
+        text = (
+            "🎯 <b>Court Drop Alert & Sniper</b>\n\n"
+            f"Your Telegram Chat ID: <code>{chat_id}</code>\n\n"
+            "To receive instant Telegram alerts whenever prime slots (7–10 PM) open up on cancellations, run on your computer or VPS:\n\n"
+            f"<code>python sniper.py --zone south --chat-id {chat_id}</code>\n\n"
+            "<i>Or monitor specific suburbs:</i>\n"
+            f"• Bandra: <code>python sniper.py --venue bandra --chat-id {chat_id}</code>\n"
+            f"• Worli/Lower Parel: <code>python sniper.py --venue worli --chat-id {chat_id}</code>\n"
+        )
+        self.send_message(chat_id, text)
 
     def handle_venues(self, chat_id: int, zone_arg: Optional[str] = None):
         catalog = load_cached_catalog()
@@ -201,6 +214,8 @@ class TelegramBot:
             self.execute_search(chat_id, zone_filter="west", date_input="tomorrow", time_window="19:00-22:00")
         elif text.startswith("/east"):
             self.execute_search(chat_id, zone_filter="east", date_input="tomorrow", time_window="19:00-22:00")
+        elif text.startswith("/sniper") or text.startswith("/id") or text.startswith("/alert"):
+            self.handle_sniper_info(chat_id)
         elif text.startswith("/venues"):
             parts = text.split()
             zone = parts[1] if len(parts) > 1 else None
