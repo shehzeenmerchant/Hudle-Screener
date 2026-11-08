@@ -30,7 +30,7 @@ class TelegramBot:
 
         try:
             req = urllib.request.Request(url, data=req_data, headers=headers)
-            with urllib.request.urlopen(req, context=CTX, timeout=35) as r:
+            with urllib.request.urlopen(req, context=CTX, timeout=30) as r:
                 res = json.loads(r.read().decode("utf-8"))
                 if res.get("ok"):
                     return res.get("result")
@@ -58,7 +58,7 @@ class TelegramBot:
             {"command": "sobo", "description": "South Mumbai prime slots tomorrow (7-10 PM)"},
             {"command": "west", "description": "Western Suburbs prime slots tomorrow (7-10 PM)"},
             {"command": "east", "description": "Eastern Suburbs prime slots tomorrow (7-10 PM)"},
-            {"command": "slots", "description": "Search slots: /slots [zone/venue] [date] [time]"},
+            {"command": "slots", "description": "Search slots: /slots [suburb/venue] [date] [time]"},
             {"command": "venues", "description": "List venues: /venues [south/west/east]"},
             {"command": "help", "description": "Show usage instructions"}
         ]
@@ -70,32 +70,33 @@ class TelegramBot:
         safe_name = html.escape(user_first_name)
         text = (
             f"👋 <b>Hey {safe_name}! Welcome to Mumbai Padel Finder.</b>\n\n"
-            "I scan all 49+ Mumbai Padel courts across <b>South Mumbai, Western Suburbs & Eastern Suburbs</b> in real time on Hudle.\n\n"
-            "⚡ <b>Quick Shortcuts:</b>\n"
-            "• /sobo — South Mumbai slots tomorrow (7-10 PM)\n"
-            "• /west — Western Suburbs slots tomorrow (7-10 PM)\n"
-            "• /east — Eastern Suburbs slots tomorrow (7-10 PM)\n\n"
-            "🔍 <b>Custom Search:</b>\n"
-            "<code>/slots [zone/venue] [date] [time]</code>\n"
+            "I scan Mumbai Padel courts across <b>South Mumbai, Western Suburbs & Eastern Suburbs</b> in real time on Hudle.\n\n"
+            "⚡ <b>Instant Hotspot Shortcuts (Tomorrow 7–10 PM):</b>\n"
+            "• Tap below for fast instant results:\n\n"
+            "🔍 <b>Custom Suburb / Venue Search:</b>\n"
+            "<code>/slots [venue/suburb] [date] [time]</code>\n"
             "<i>Examples:</i>\n"
-            "• <code>/slots south tomorrow 19:00-22:00</code>\n"
+            "• <code>/slots mazgaon tomorrow</code>\n"
+            "• <code>/slots worli tomorrow 19:00-22:00</code>\n"
             "• <code>/slots bandra today 20:00-22:00</code>\n"
-            "• <code>/slots mazgaon tomorrow</code>\n\n"
-            "Tap a quick button below to start:"
+            "• <code>/sobo</code> or <code>/west</code>"
         )
         keyboard = {
             "inline_keyboard": [
                 [
-                    {"text": "🎾 South Mumbai (Tomorrow 7-10 PM)", "callback_data": "search:south:tomorrow:19:00-22:00"},
+                    {"text": "🎾 Mazgaon (Tomorrow 7-10 PM)", "callback_data": "search:venue:mazgaon:tomorrow:19:00-22:00"},
+                    {"text": "🎾 Worli (Tomorrow 7-10 PM)", "callback_data": "search:venue:worli:tomorrow:19:00-22:00"},
                 ],
                 [
-                    {"text": "🎾 Western Suburbs (Tomorrow 7-10 PM)", "callback_data": "search:west:tomorrow:19:00-22:00"},
+                    {"text": "🎾 Bandra (Tomorrow 7-10 PM)", "callback_data": "search:venue:bandra:tomorrow:19:00-22:00"},
+                    {"text": "🎾 Ranibaug (Tomorrow 7-10 PM)", "callback_data": "search:venue:ranibaug:tomorrow:19:00-22:00"},
                 ],
                 [
-                    {"text": "🎾 Eastern Suburbs (Tomorrow 7-10 PM)", "callback_data": "search:east:tomorrow:19:00-22:00"},
+                    {"text": "🎾 South Mumbai (Top Courts)", "callback_data": "search:zone:south:tomorrow:19:00-22:00"},
+                    {"text": "🎾 Western Suburbs (Top Courts)", "callback_data": "search:zone:west:tomorrow:19:00-22:00"},
                 ],
                 [
-                    {"text": "📍 View All Venues", "callback_data": "venues:all"}
+                    {"text": "📍 View All 49 Venues", "callback_data": "venues:all"}
                 ]
             ]
         }
@@ -106,7 +107,7 @@ class TelegramBot:
             self.send_message(
                 chat_id,
                 "ℹ️ <b>Phase 2 (Court Sniper & Drop Alerts)</b> is currently disabled.\n\n"
-                "This feature can be activated in the future by setting <code>ENABLE_PHASE2=true</code> in your environment or configuration."
+                "This feature can be activated by setting <code>ENABLE_PHASE2=true</code> in your environment or configuration."
             )
             return
 
@@ -114,10 +115,10 @@ class TelegramBot:
             "🎯 <b>Court Drop Alert & Sniper</b>\n\n"
             f"Your Telegram Chat ID: <code>{chat_id}</code>\n\n"
             "To receive instant Telegram alerts whenever prime slots (7–10 PM) open up on cancellations, run on your computer or VPS:\n\n"
-            f"<code>python sniper.py --zone south --chat-id {chat_id}</code>\n\n"
+            f"<code>python sniper.py --enable --zone south --chat-id {chat_id}</code>\n\n"
             "<i>Or monitor specific suburbs:</i>\n"
-            f"• Bandra: <code>python sniper.py --venue bandra --chat-id {chat_id}</code>\n"
-            f"• Worli/Lower Parel: <code>python sniper.py --venue worli --chat-id {chat_id}</code>\n"
+            f"• Bandra: <code>python sniper.py --enable --venue bandra --chat-id {chat_id}</code>\n"
+            f"• Worli/Lower Parel: <code>python sniper.py --enable --venue worli --chat-id {chat_id}</code>\n"
         )
         self.send_message(chat_id, text)
 
@@ -156,11 +157,15 @@ class TelegramBot:
         except Exception:
             target_date = parse_date("tomorrow")
 
-        area_label = zone_filter or venue_filter or "Mumbai"
+        area_label = venue_filter or zone_filter or "Mumbai"
         safe_area = html.escape(area_label.title())
         safe_time = html.escape(time_window)
 
+        # Notify user that search is commencing
         self.send_message(chat_id, f"🔎 <i>Scanning courts in <b>{safe_area}</b> for {target_date} ({safe_time})...</i>")
+
+        # Cap max_venues for broad zone scans to keep serverless execution under 2.5s
+        max_v = 2 if (zone_filter and not venue_filter) else None
 
         try:
             slots = search_slots(
@@ -168,6 +173,7 @@ class TelegramBot:
                 time_window=time_window,
                 venue_filter=venue_filter,
                 zone_filter=zone_filter,
+                max_venues=max_v,
                 client=self.client
             )
         except Exception as e:
@@ -177,7 +183,8 @@ class TelegramBot:
         if not slots:
             self.send_message(
                 chat_id,
-                f"❌ <b>No available slots found</b> matching your criteria in <b>{safe_area}</b> for {target_date} ({safe_time})."
+                f"❌ <b>No available slots found</b> matching your criteria in <b>{safe_area}</b> for {target_date} ({safe_time}).\n\n"
+                "💡 <i>Tip: Try another time or specific suburb e.g. <code>/slots mazgaon tomorrow</code></i>"
             )
             return
 
@@ -187,7 +194,7 @@ class TelegramBot:
         msg = f"🎾 <b>Found {len(slots)} Open Slot(s) for {target_date}:</b>\n\n"
         buttons = []
 
-        for s in slots[:10]:
+        for s in slots[:8]:
             t_start = format_time_12hr(s["start_time"])
             t_end = format_time_12hr(s["end_time"])
             v_name = s["venue_name"]
@@ -201,8 +208,8 @@ class TelegramBot:
             msg += f"• <b>{t_start} – {t_end}</b> | <b>₹{price}</b>\n  🏟 <b>{safe_v}</b> ({safe_c})\n\n"
             buttons.append([{"text": f"Book {v_name[:20]} ({t_start})", "url": url}])
 
-        if len(slots) > 10:
-            msg += f"<i>...showing top 10 of {len(slots)} slots.</i>"
+        if len(slots) > 8:
+            msg += f"<i>...showing top 8 of {len(slots)} slots.</i>"
 
         reply_markup = {"inline_keyboard": buttons} if buttons else None
         self.send_message(chat_id, msg, reply_markup=reply_markup)
@@ -232,7 +239,7 @@ class TelegramBot:
             self.handle_venues(chat_id, zone)
         elif text.startswith("/slots"):
             parts = text.split()
-            zone_or_venue = parts[1] if len(parts) > 1 else "south"
+            zone_or_venue = parts[1] if len(parts) > 1 else "mazgaon"
             date_arg = parts[2] if len(parts) > 2 else "tomorrow"
             time_arg = parts[3] if len(parts) > 3 else "19:00-22:00"
 
@@ -263,9 +270,15 @@ class TelegramBot:
             return
 
         if data.startswith("search:"):
-            # Format: search:zone:date:time
+            # Format: search:type:filter:date:time
             parts = data.split(":")
-            if len(parts) == 4:
+            if len(parts) == 5:
+                _, mode, filter_val, date_str, time_str = parts
+                if mode == "venue":
+                    self.execute_search(chat_id, venue_filter=filter_val, date_input=date_str, time_window=time_str)
+                else:
+                    self.execute_search(chat_id, zone_filter=filter_val, date_input=date_str, time_window=time_str)
+            elif len(parts) == 4:
                 _, zone, date_str, time_str = parts
                 self.execute_search(chat_id, zone_filter=zone, date_input=date_str, time_window=time_str)
         elif data.startswith("venues:"):
@@ -276,7 +289,7 @@ class TelegramBot:
     def run(self):
         print("🤖 Setting Telegram Bot commands...")
         self.set_commands()
-        print("🚀 Telegram Bot is running! Waiting for messages...")
+        print("🚀 Telegram Bot is running via Long Polling! Waiting for messages...")
 
         while True:
             try:

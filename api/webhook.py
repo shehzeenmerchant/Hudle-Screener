@@ -17,6 +17,9 @@ try:
 except Exception as e:
     IMPORT_ERROR = str(e)
 
+# In-memory deduplication set to prevent Telegram from looping retries
+PROCESSED_UPDATES = set()
+
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
@@ -44,6 +47,21 @@ class handler(BaseHTTPRequestHandler):
         try:
             if not IMPORT_ERROR and post_data:
                 update = json.loads(post_data.decode("utf-8"))
+                update_id = update.get("update_id")
+
+                # De-duplicate: if Telegram retries the same update, acknowledge and drop it immediately
+                if update_id and update_id in PROCESSED_UPDATES:
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(b'{"status":"already_processed"}')
+                    return
+
+                if update_id:
+                    PROCESSED_UPDATES.add(update_id)
+                    if len(PROCESSED_UPDATES) > 1000:
+                        PROCESSED_UPDATES.clear()
+
                 bot = TelegramBot(token)
 
                 if "message" in update:
@@ -53,7 +71,7 @@ class handler(BaseHTTPRequestHandler):
         except Exception as e:
             print(f"Webhook processing error: {e}", file=sys.stderr)
 
-        # Respond HTTP 200 OK after dispatching
+        # Always respond HTTP 200 OK so Telegram registers delivery
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.end_headers()

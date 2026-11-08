@@ -5,6 +5,11 @@ from typing import Any, Dict, List, Optional
 from hudle_client import HudleClient
 from sync_catalog import load_cached_catalog, sync_mumbai_padel_catalog
 
+PRIVATE_CLUBS = [
+    "members only", "cricket club of india", "willingdon",
+    "wodehouse", "breach candy", "bombay gymkhana", "nsci"
+]
+
 def parse_date(date_input: str) -> str:
     """Parses 'today', 'tomorrow', '+N', or 'YYYY-MM-DD' into 'YYYY-MM-DD'."""
     date_str = date_input.strip().lower()
@@ -82,6 +87,7 @@ def search_slots(
     venue_filter: Optional[str] = None,
     zone_filter: Optional[str] = None,
     max_price: Optional[float] = None,
+    max_venues: Optional[int] = None,
     client: Optional[HudleClient] = None
 ) -> List[Dict[str, Any]]:
     """Scans Hudle API for available padel court slots matching filters."""
@@ -108,6 +114,17 @@ def search_slots(
             or query in v.get("slug", "").lower()
         ]
 
+    # Skip non-public / private members-only gymkhanas on general searches
+    if not venue_filter:
+        catalog = [
+            v for v in catalog
+            if not any(bad in v.get("name", "").lower() for bad in PRIVATE_CLUBS)
+        ]
+
+    # Apply max_venues cap if specified (e.g. for fast Telegram webhook response)
+    if max_venues and len(catalog) > max_venues:
+        catalog = catalog[:max_venues]
+
     start_min, end_min = parse_time_window(time_window)
     matched_slots = []
 
@@ -115,10 +132,6 @@ def search_slots(
     print(f"🔎 Scanning slots across {len(catalog)} venues ({total_courts} courts) for {date_str}...", file=sys.stderr)
 
     for v in catalog:
-        # Skip members-only clubs on general searches to keep queries fast and actionable
-        if "members only" in v.get("name", "").lower() and not venue_filter:
-            continue
-
         venue_id = v["venue_id"]
         venue_name = v["name"]
         share_url = v.get("share_url") or f"https://hudle.in/venues/{v.get('slug')}"

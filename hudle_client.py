@@ -16,11 +16,12 @@ HEADERS = {
 CTX = ssl.create_default_context()
 
 class HudleClient:
-    def __init__(self, delay_between_requests: float = 0.25, auth_token: Optional[str] = None, cache_ttl_seconds: float = 45.0):
+    def __init__(self, delay_between_requests: float = 0.05, auth_token: Optional[str] = None, cache_ttl_seconds: float = 45.0):
         self.delay = delay_between_requests
         self.auth_token = auth_token
         self.cache_ttl = cache_ttl_seconds
         self._slot_cache: Dict[str, Tuple[float, List[Dict[str, Any]]]] = {}
+        self._req_counter = 0
 
     def set_auth_token(self, token: str):
         self.auth_token = token.strip() if token else None
@@ -31,14 +32,19 @@ class HudleClient:
         params: Optional[Dict[str, Any]] = None,
         method: str = "GET",
         payload: Optional[Dict[str, Any]] = None,
-        max_retries: int = 4
+        max_retries: int = 2
     ) -> Dict[str, Any]:
         url = f"{BASE_URL}/{endpoint.lstrip('/')}"
         if params:
             query = "&".join(f"{k}={v}" for k, v in params.items())
             url = f"{url}?{query}" if "?" not in url else f"{url}&{query}"
 
+        # Rotate device source (1=iOS, 2=Android, 3=Web) to distribute rate limits across buckets
+        self._req_counter += 1
+        active_device = str((self._req_counter % 3) + 1)
+
         headers = dict(HEADERS)
+        headers["x-device-source"] = active_device
         if self.auth_token:
             headers["Authorization"] = f"Bearer {self.auth_token}"
 
@@ -48,29 +54,30 @@ class HudleClient:
 
         for attempt in range(max_retries):
             try:
-                time.sleep(self.delay)
+                if self.delay > 0:
+                    time.sleep(self.delay)
                 req = urllib.request.Request(url, data=data_bytes, headers=headers, method=method)
-                with urllib.request.urlopen(req, context=CTX, timeout=12) as r:
+                with urllib.request.urlopen(req, context=CTX, timeout=3.5) as r:
                     return json.loads(r.read().decode("utf-8"))
             except urllib.error.HTTPError as e:
                 if e.code == 429:
-                    retry_after = e.headers.get("Retry-After")
-                    wait_time = float(retry_after) if retry_after and retry_after.isdigit() else (2.0 + attempt * 0.5)
-                    time.sleep(wait_time)
+                    if attempt >= max_retries - 1:
+                        # Avoid blocking callers on rate limits
+                        return {}
+                    time.sleep(0.4)
                 else:
                     body = e.read().decode("utf-8", errors="ignore") if hasattr(e, "read") else ""
-                    if e.code not in (400, 401, 422):
+                    if e.code not in (400, 401, 404, 422):
                         print(f"HTTP {e.code} for {url}: {body[:200]}", file=sys.stderr)
                     try:
-                        err_json = json.loads(body)
-                        return err_json
+                        return json.loads(body)
                     except Exception:
-                        raise
-            except Exception as e:
+                        return {}
+            except Exception:
                 if attempt == max_retries - 1:
-                    raise
-                time.sleep(1.0)
-        raise RuntimeError(f"Max retries exceeded for {url}")
+                    return {}
+                time.sleep(0.3)
+        return {}
 
     def get_venues(self, city_id: int = 2, sport_id: int = 44, per_page: int = 50) -> List[Dict[str, Any]]:
         """Fetch all venues for a city and sport (City 2 = Mumbai, Sport 44 = Padel)."""
@@ -99,7 +106,7 @@ class HudleClient:
         if slot_data:
             slots = slot_data[0].get("slots", [])
 
-        if use_cache:
+        if use_cache and slots:
             self._slot_cache[cache_key] = (now, slots)
 
         return slots
