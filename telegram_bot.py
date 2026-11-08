@@ -29,6 +29,14 @@ def save_config(cfg: Dict[str, str]):
     with open(CONFIG_FILE, "w") as f:
         json.dump(cfg, f, indent=2)
 
+def is_phase2_enabled() -> bool:
+    cfg = load_config()
+    return os.environ.get("ENABLE_PHASE2", "").lower() in ("1", "true") or bool(cfg.get("enable_phase2_sniper", False))
+
+def is_phase3_enabled() -> bool:
+    cfg = load_config()
+    return os.environ.get("ENABLE_PHASE3", "").lower() in ("1", "true") or bool(cfg.get("enable_phase3_autobook", False))
+
 class TelegramBot:
     def __init__(self, token: str):
         self.token = token.strip()
@@ -74,10 +82,11 @@ class TelegramBot:
             {"command": "west", "description": "Western Suburbs prime slots tomorrow (7-10 PM)"},
             {"command": "east", "description": "Eastern Suburbs prime slots tomorrow (7-10 PM)"},
             {"command": "slots", "description": "Search slots: /slots [zone/venue] [date] [time]"},
-            {"command": "sniper", "description": "Setup drop & cancellation alerts for your chat"},
             {"command": "venues", "description": "List venues: /venues [south/west/east]"},
             {"command": "help", "description": "Show usage instructions"}
         ]
+        if is_phase2_enabled():
+            commands.insert(4, {"command": "sniper", "description": "Setup drop & cancellation alerts for your chat"})
         self._api_call("setMyCommands", {"commands": commands})
 
     def handle_start(self, chat_id: int, user_first_name: str):
@@ -115,6 +124,14 @@ class TelegramBot:
         self.send_message(chat_id, text, reply_markup=keyboard)
 
     def handle_sniper_info(self, chat_id: int):
+        if not is_phase2_enabled():
+            self.send_message(
+                chat_id,
+                "ℹ️ <b>Phase 2 (Court Sniper & Drop Alerts)</b> is currently disabled.\n\n"
+                "This feature can be activated in the future by setting <code>ENABLE_PHASE2=true</code> in your environment or configuration."
+            )
+            return
+
         text = (
             "🎯 <b>Court Drop Alert & Sniper</b>\n\n"
             f"Your Telegram Chat ID: <code>{chat_id}</code>\n\n"

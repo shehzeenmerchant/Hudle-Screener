@@ -40,6 +40,10 @@ def load_config() -> Dict[str, str]:
             pass
     return cfg
 
+def is_phase2_enabled() -> bool:
+    cfg = load_config()
+    return os.environ.get("ENABLE_PHASE2", "").lower() in ("1", "true") or bool(cfg.get("enable_phase2_sniper", False))
+
 def send_telegram_alert(
     bot_token: str,
     chat_id: str,
@@ -327,8 +331,15 @@ def main():
     parser.add_argument("--alert-existing", action="store_true", help="Also send alerts for slots already available on first scan")
     parser.add_argument("--once", action="store_true", help="Run a single check and exit (useful for cron jobs)")
     parser.add_argument("--auto-book", action="store_true", help="Attempt automatic slot reservation when a drop occurs")
+    parser.add_argument("--enable", action="store_true", help="Explicitly activate Phase 2 court sniper")
 
     args = parser.parse_args()
+
+    if not (args.enable or is_phase2_enabled()):
+        print("⚠️  Phase 2 (Court Sniper & Drop Alerts) is currently disabled.")
+        print("To activate in the future, pass '--enable' or set ENABLE_PHASE2=true in your environment/config.json.")
+        sys.exit(0)
+
     cfg = load_config()
 
     try:

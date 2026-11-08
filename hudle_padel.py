@@ -26,9 +26,17 @@ def save_local_config(cfg: dict):
         json.dump(cfg, f, indent=2)
     os.chmod(CONFIG_FILE, 0o600)
 
+def is_phase2_enabled() -> bool:
+    cfg = load_local_config()
+    return os.environ.get("ENABLE_PHASE2", "").lower() in ("1", "true") or bool(cfg.get("enable_phase2_sniper", False))
+
+def is_phase3_enabled() -> bool:
+    cfg = load_local_config()
+    return os.environ.get("ENABLE_PHASE3", "").lower() in ("1", "true") or bool(cfg.get("enable_phase3_autobook", False))
+
 def main():
     parser = argparse.ArgumentParser(
-        description="🎾 Hudle Mumbai Padel Slot Finder, Sniper & Booking Tool",
+        description="🎾 Hudle Mumbai Padel Slot Finder & Booking Tool",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""Examples:
   # Search all slots for tomorrow between 7 PM and 10 PM
@@ -37,17 +45,11 @@ def main():
   # Search only in Bandra or Khar with max price Rs 1500
   python hudle_padel.py search --date today --time 18:00-21:00 --venue bandra --max-price 1500
 
-  # Run Slot Sniper for prime slots (7-10 PM) with instant Telegram drop alerts
-  python hudle_padel.py sniper --zone south --date tomorrow --time 19:00-22:00
-
   # List all cached Mumbai Padel venues and courts
   python hudle_padel.py venues
 
   # Refresh the venue catalog
   python hudle_padel.py sync
-
-  # Log into your Hudle account for automated bookings
-  python hudle_padel.py login
 """
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
@@ -55,14 +57,15 @@ def main():
     # Command: search
     search_p = subparsers.add_parser("search", help="Search available padel slots")
     search_p.add_argument("--date", "-d", default="tomorrow", help="Date: 'today', 'tomorrow', or 'YYYY-MM-DD' (default: tomorrow)")
-    search_p.add_argument("--time", "-t", default=None, help="Time window, e.g. '19:00-22:00' or '18-21' (default: all day)")
+    search_p.add_argument("--time", "-t", default=None, help="Time window or preset: 'morning', 'evening', 'night', 'all', or '19:00-22:00'")
     search_p.add_argument("--zone", "-z", choices=["south", "west", "east"], default=None, help="Filter by zone: 'south' (SoBo), 'west' (Western Suburbs), 'east' (Eastern Suburbs)")
     search_p.add_argument("--venue", "-v", default=None, help="Filter by venue name or area (e.g. 'bandra', 'khar', 'worli')")
     search_p.add_argument("--max-price", "-p", type=float, default=None, help="Maximum price per slot in ₹")
     search_p.add_argument("--json", action="store_true", help="Output results in JSON format")
 
-    # Command: sniper
-    sniper_p = subparsers.add_parser("sniper", help="Run background monitor for cancellations & newly dropped slots")
+    # Command: sniper (Phase 2 feature flag)
+    sniper_p = subparsers.add_parser("sniper", help="[Phase 2 Feature] Run background monitor for cancellations & newly dropped slots")
+    sniper_p.add_argument("--enable", action="store_true", help="Explicitly activate Phase 2 feature")
     sniper_p.add_argument("--date", "-d", default="tomorrow", help="Date: 'today', 'tomorrow', or 'YYYY-MM-DD' (default: tomorrow)")
     sniper_p.add_argument("--time", "-t", default="19:00-22:00", help="Time window, e.g. '19:00-22:00' (default: 19:00-22:00)")
     sniper_p.add_argument("--zone", "-z", choices=["south", "west", "east"], default=None, help="Filter by zone: 'south', 'west', or 'east'")
@@ -82,8 +85,9 @@ def main():
     # Command: sync
     sync_p = subparsers.add_parser("sync", help="Refresh/update the local venue catalog from Hudle")
 
-    # Command: login
-    login_p = subparsers.add_parser("login", help="Log into Hudle to save your auth token for bookings")
+    # Command: login (Phase 3 feature flag)
+    login_p = subparsers.add_parser("login", help="[Phase 3 Feature] Log into Hudle to save your auth token for bookings")
+    login_p.add_argument("--enable", action="store_true", help="Explicitly activate Phase 3 feature")
 
     args = parser.parse_args()
 
@@ -115,6 +119,11 @@ def main():
             display_slots_table(slots, target_date)
 
     elif args.command == "sniper":
+        if not (getattr(args, "enable", False) or is_phase2_enabled()):
+            print("⚠️  Phase 2 (Drop Alert / Court Sniper) is currently disabled.")
+            print("To activate in the future, pass '--enable' or set ENABLE_PHASE2=true in your environment/config.json.")
+            sys.exit(0)
+
         from sniper import SlotSniper, load_config
         cfg = load_config()
         try:
@@ -181,6 +190,11 @@ def main():
         sync_mumbai_padel_catalog()
 
     elif args.command == "login":
+        if not (getattr(args, "enable", False) or is_phase3_enabled()):
+            print("⚠️  Phase 3 (Account Login & Auto-Booking) is currently disabled.")
+            print("To activate in the future, pass '--enable' or set ENABLE_PHASE3=true in your environment/config.json.")
+            sys.exit(0)
+
         print("🔐 Hudle Authentication Login")
         email = input("Hudle Registered Email: ").strip()
         password = getpass.getpass("Hudle Password: ").strip()
