@@ -1,9 +1,9 @@
 import json
 import os
-from typing import Optional, Dict, Any, List
-from hudle_client import HudleClient
+from typing import Any, Dict, List, Optional
 
 from classify_zones import classify_venue
+from hudle_client import HudleClient
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "venues_cache.json")
 
@@ -20,13 +20,14 @@ def _parse_court(f: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         "price_onwards": f.get("price_onwards") or f.get("price")
     }
 
-def sync_mumbai_padel_catalog(client: HudleClient = None, verbose: bool = True) -> list:
+def sync_mumbai_padel_catalog(client: Optional[HudleClient] = None, verbose: bool = True) -> List[Dict[str, Any]]:
+    """Fetches all Mumbai Padel venues and active courts from Hudle and updates venues_cache.json."""
     if client is None:
         client = HudleClient(delay_between_requests=0.4)
 
     if verbose:
         print("🔍 Scanning Hudle for Mumbai Padel venues (City ID: 2, Sport ID: 44)...")
-    
+
     venues_list = client.get_venues(city_id=2, sport_id=44, per_page=50)
     if verbose:
         print(f"Found {len(venues_list)} venues. Fetching court details for each...")
@@ -90,7 +91,7 @@ def sync_mumbai_padel_catalog(client: HudleClient = None, verbose: bool = True) 
                 print(f"    ✅ Added {len(padel_courts)} padel court(s)")
         else:
             if verbose:
-                print(f"    ℹ️ No active padel courts listed")
+                print("    ℹ️ No active padel courts listed")
 
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump(catalog, f, indent=2, ensure_ascii=False)
@@ -99,7 +100,8 @@ def sync_mumbai_padel_catalog(client: HudleClient = None, verbose: bool = True) 
         print(f"\n🎉 Successfully cached {len(catalog)} venues with padel courts to '{CACHE_FILE}'.")
     return catalog
 
-def load_cached_catalog() -> list:
+def load_cached_catalog() -> List[Dict[str, Any]]:
+    """Loads cached Mumbai venues from venues_cache.json with multi-path resolution for serverless environments."""
     possible_paths = [
         CACHE_FILE,
         os.path.join(os.getcwd(), "venues_cache.json"),

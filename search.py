@@ -1,10 +1,12 @@
+import sys
 from datetime import datetime, timedelta
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
 
 from hudle_client import HudleClient
 from sync_catalog import load_cached_catalog, sync_mumbai_padel_catalog
 
 def parse_date(date_input: str) -> str:
+    """Parses 'today', 'tomorrow', '+N', or 'YYYY-MM-DD' into 'YYYY-MM-DD'."""
     date_str = date_input.strip().lower()
     today = datetime.now()
     if date_str in ("today", "t"):
@@ -12,7 +14,6 @@ def parse_date(date_input: str) -> str:
     elif date_str in ("tomorrow", "tom", "tmrw"):
         return (today + timedelta(days=1)).strftime("%Y-%m-%d")
     elif date_str.isdigit() and len(date_str) in (1, 2):
-        # E.g. "+1", "+2"
         days = int(date_str)
         return (today + timedelta(days=days)).strftime("%Y-%m-%d")
     else:
@@ -61,6 +62,7 @@ def time_to_minutes(time_str: str) -> int:
     return int(h) * 60 + int(m)
 
 def normalize_zone(zone_input: Optional[str]) -> Optional[str]:
+    """Normalizes informal zone terms to standard catalog keys."""
     if not zone_input:
         return None
     z = zone_input.strip().lower()
@@ -82,12 +84,13 @@ def search_slots(
     max_price: Optional[float] = None,
     client: Optional[HudleClient] = None
 ) -> List[Dict[str, Any]]:
+    """Scans Hudle API for available padel court slots matching filters."""
     if client is None:
         client = SHARED_CLIENT
 
     catalog = load_cached_catalog()
     if not catalog:
-        print("ℹ️ Venue catalog not found. Automatically running first-time sync...")
+        print("ℹ️ Venue catalog not found. Automatically running first-time sync...", file=sys.stderr)
         catalog = sync_mumbai_padel_catalog(client=client)
 
     # Filter by Zone if specified
@@ -109,7 +112,7 @@ def search_slots(
     matched_slots = []
 
     total_courts = sum(len(v.get("courts", [])) for v in catalog)
-    print(f"🔎 Scanning slots across {len(catalog)} venues ({total_courts} courts) for {date_str}...")
+    print(f"🔎 Scanning slots across {len(catalog)} venues ({total_courts} courts) for {date_str}...", file=sys.stderr)
 
     for v in catalog:
         # Skip members-only clubs on general searches to keep queries fast and actionable
@@ -131,7 +134,7 @@ def search_slots(
 
             try:
                 slots = client.get_slots(venue_id, court_uuid, date_str)
-            except Exception as e:
+            except Exception:
                 continue
 
             for s in slots:
@@ -163,7 +166,7 @@ def search_slots(
     return matched_slots
 
 def format_time_12hr(dt_str: str) -> str:
-    """Formats '2026-11-09 19:30:00' to '07:30 PM'"""
+    """Formats '2026-11-09 19:30:00' to '07:30 PM'."""
     try:
         t = datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
         return t.strftime("%I:%M %p")
@@ -171,6 +174,7 @@ def format_time_12hr(dt_str: str) -> str:
         return dt_str
 
 def display_slots_table(slots: List[Dict[str, Any]], date_str: str):
+    """Prints a clean CLI ASCII table of available slots."""
     if not slots:
         print(f"\n❌ No available slots found matching your criteria for {date_str}.")
         return

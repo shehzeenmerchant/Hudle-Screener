@@ -1,5 +1,6 @@
 import json
 import ssl
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -59,7 +60,7 @@ class HudleClient:
                 else:
                     body = e.read().decode("utf-8", errors="ignore") if hasattr(e, "read") else ""
                     if e.code not in (400, 401, 422):
-                        print(f"HTTP {e.code} for {url}: {body[:200]}")
+                        print(f"HTTP {e.code} for {url}: {body[:200]}", file=sys.stderr)
                     try:
                         err_json = json.loads(body)
                         return err_json

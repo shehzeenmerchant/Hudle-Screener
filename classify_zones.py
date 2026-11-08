@@ -1,5 +1,7 @@
 import json
+import os
 import re
+from typing import Any, Dict, Tuple
 
 SOBO_KEYWORDS = [
     'colaba', 'churchgate', 'marine lines', 'fort', 'nariman point',
@@ -19,7 +21,8 @@ WESTERN_KEYWORDS = [
     'versova', 'four bungalows', 'veera desai'
 ]
 
-def classify_venue(v):
+def classify_venue(v: Dict[str, Any]) -> Tuple[str, str]:
+    """Classifies a venue into South Mumbai, Eastern Suburbs, or Western Suburbs based on keywords."""
     text = f"{v.get('name', '')} {v.get('address', '')} {v.get('slug', '')}".lower()
 
     # Check SoBo first
@@ -37,11 +40,16 @@ def classify_venue(v):
         if re.search(r'\b' + re.escape(kw) + r'\b', text):
             return "western_suburbs", "Western Suburbs"
 
-    # Default fallback based on common patterns
+    # Default fallback
     return "western_suburbs", "Western Suburbs"
 
 if __name__ == "__main__":
-    with open("venues_cache.json", "r") as f:
+    cache_path = os.path.join(os.path.dirname(__file__), "venues_cache.json")
+    if not os.path.exists(cache_path):
+        print(f"File {cache_path} not found.")
+        exit(1)
+
+    with open(cache_path, "r", encoding="utf-8") as f:
         catalog = json.load(f)
 
     counts = {"south_mumbai": 0, "western_suburbs": 0, "eastern_suburbs": 0}
@@ -52,10 +60,10 @@ if __name__ == "__main__":
         v["zone_label"] = zone_label
         counts[zone_key] += 1
 
-    with open("venues_cache.json", "w") as f:
+    with open(cache_path, "w", encoding="utf-8") as f:
         json.dump(catalog, f, indent=2, ensure_ascii=False)
 
-    print(f"Classification Complete:")
+    print("Classification Complete:")
     print(f"  • South Mumbai: {counts['south_mumbai']} venues")
     print(f"  • Western Suburbs: {counts['western_suburbs']} venues")
     print(f"  • Eastern Suburbs: {counts['eastern_suburbs']} venues")

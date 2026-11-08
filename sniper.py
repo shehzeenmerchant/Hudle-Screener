@@ -7,6 +7,7 @@ prime slots (e.g., 7:00 PM – 10:00 PM), and dispatches instant Telegram alerts
 """
 
 import argparse
+import html
 import json
 import os
 import ssl
@@ -16,33 +17,12 @@ import urllib.request
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set
 
+import config
 from hudle_client import HudleClient
 from search import format_time_12hr, normalize_zone, parse_date, parse_time_window, time_to_minutes
 from sync_catalog import load_cached_catalog, sync_mumbai_padel_catalog
 
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), "config.json")
 CTX = ssl.create_default_context()
-
-def load_config() -> Dict[str, str]:
-    cfg = {
-        "telegram_bot_token": os.environ.get("TELEGRAM_BOT_TOKEN", ""),
-        "telegram_chat_id": os.environ.get("TELEGRAM_CHAT_ID", ""),
-        "hudle_auth_token": os.environ.get("HUDLE_AUTH_TOKEN", "")
-    }
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, "r") as f:
-                file_cfg = json.load(f)
-                for k, v in file_cfg.items():
-                    if v and not cfg.get(k):
-                        cfg[k] = v
-        except Exception:
-            pass
-    return cfg
-
-def is_phase2_enabled() -> bool:
-    cfg = load_config()
-    return os.environ.get("ENABLE_PHASE2", "").lower() in ("1", "true") or bool(cfg.get("enable_phase2_sniper", False))
 
 def send_telegram_alert(
     bot_token: str,
@@ -69,11 +49,15 @@ def send_telegram_alert(
     except Exception:
         friendly_date = date_str
 
+    safe_v = html.escape(v_name)
+    safe_c = html.escape(c_name)
+    safe_date = html.escape(friendly_date)
+
     text = (
         f"🚨 <b>PRIME PADEL SLOT DROPPED!</b>\n\n"
-        f"🏟 <b>Venue:</b> {v_name}\n"
-        f"🎾 <b>Court:</b> {c_name}\n"
-        f"📅 <b>Date:</b> {friendly_date}\n"
+        f"🏟 <b>Venue:</b> {safe_v}\n"
+        f"🎾 <b>Court:</b> {safe_c}\n"
+        f"📅 <b>Date:</b> {safe_date}\n"
         f"⏰ <b>Time:</b> {t_start} – {t_end}\n"
         f"💰 <b>Price:</b> ₹{price}\n\n"
         f"⚡ <i>Slot was just cancelled or opened up. Tap below to reserve instantly!</i>"
@@ -101,7 +85,7 @@ def send_telegram_alert(
             res = json.loads(r.read().decode("utf-8"))
             return res.get("ok", False)
     except Exception as e:
-        print(f"⚠️ Failed to send Telegram alert: {e}")
+        print(f"⚠️ Failed to send Telegram alert: {e}", file=sys.stderr)
         return False
 
 class SlotSniper:
@@ -188,7 +172,6 @@ class SlotSniper:
                         continue
 
                     slot_duration = time_to_minutes(s["end_time"]) - s_min
-                    # If min_duration is 60 and slot is 30, we'll keep it for consecutive pairing check
                     available.append({
                         "venue_name": venue_name,
                         "venue_id": venue_id,
@@ -249,7 +232,6 @@ class SlotSniper:
         if self.auto_book and self.auth_token:
             print("⚡ Attempting automatic reservation...")
             try:
-                # Booking payload structure
                 payload = {
                     "slots": [slot["slot_id"]],
                     "activity_id": slot["activity_id"]
@@ -257,7 +239,7 @@ class SlotSniper:
                 res = self.client.create_booking(slot["venue_id"], slot["facility_id"], payload)
                 print(f"🎉 Booking Response: {res}")
             except Exception as e:
-                print(f"⚠️ Auto-booking failed: {e}")
+                print(f"⚠️ Auto-booking failed: {e}", file=sys.stderr)
 
     def run(self):
         total_courts = sum(len(v.get("courts", [])) for v in self.catalog)
@@ -298,7 +280,6 @@ class SlotSniper:
                     else:
                         print(f" Done ({duration:.1f}s). No new drops ({len(current_slots)} open).")
 
-                    # Update known set
                     self.known_available_slots = current_keys
 
                 time.sleep(self.interval)
@@ -335,22 +316,20 @@ def main():
 
     args = parser.parse_args()
 
-    if not (args.enable or is_phase2_enabled()):
+    if not (args.enable or config.is_phase2_enabled()):
         print("⚠️  Phase 2 (Court Sniper & Drop Alerts) is currently disabled.")
         print("To activate in the future, pass '--enable' or set ENABLE_PHASE2=true in your environment/config.json.")
         sys.exit(0)
 
-    cfg = load_config()
-
     try:
         target_date = parse_date(args.date)
     except ValueError as e:
-        print(f"Error: {e}")
+        print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
-    bot_token = cfg.get("telegram_bot_token")
-    chat_id = args.chat_id or cfg.get("telegram_chat_id")
-    auth_token = cfg.get("hudle_auth_token")
+    bot_token = config.get_bot_token()
+    chat_id = args.chat_id or config.get_chat_id()
+    auth_token = config.get_auth_token()
 
     sniper = SlotSniper(
         date_str=target_date,

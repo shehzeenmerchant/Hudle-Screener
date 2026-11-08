@@ -1,37 +1,17 @@
 #!/usr/bin/env python3
+"""
+🎾 Hudle Mumbai Padel Screener & Booking CLI
+"""
+
 import argparse
 import getpass
 import json
-import os
 import sys
 
-from search import parse_date, search_slots, display_slots_table, normalize_zone
-from sync_catalog import sync_mumbai_padel_catalog, load_cached_catalog
+import config
 from hudle_client import HudleClient
-
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), "config.json")
-
-def load_local_config() -> dict:
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, "r") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
-
-def save_local_config(cfg: dict):
-    with open(CONFIG_FILE, "w") as f:
-        json.dump(cfg, f, indent=2)
-    os.chmod(CONFIG_FILE, 0o600)
-
-def is_phase2_enabled() -> bool:
-    cfg = load_local_config()
-    return os.environ.get("ENABLE_PHASE2", "").lower() in ("1", "true") or bool(cfg.get("enable_phase2_sniper", False))
-
-def is_phase3_enabled() -> bool:
-    cfg = load_local_config()
-    return os.environ.get("ENABLE_PHASE3", "").lower() in ("1", "true") or bool(cfg.get("enable_phase3_autobook", False))
+from search import display_slots_table, normalize_zone, parse_date, search_slots
+from sync_catalog import load_cached_catalog, sync_mumbai_padel_catalog
 
 def main():
     parser = argparse.ArgumentParser(
@@ -43,6 +23,9 @@ def main():
 
   # Search only in Bandra or Khar with max price Rs 1500
   python hudle_padel.py search --date today --time 18:00-21:00 --venue bandra --max-price 1500
+
+  # Pipe results to jq
+  python hudle_padel.py search --date tomorrow --zone south --json | jq '.[0]'
 
   # List all cached Mumbai Padel venues and courts
   python hudle_padel.py venues
@@ -60,7 +43,7 @@ def main():
     search_p.add_argument("--zone", "-z", choices=["south", "west", "east"], default=None, help="Filter by zone: 'south' (SoBo), 'west' (Western Suburbs), 'east' (Eastern Suburbs)")
     search_p.add_argument("--venue", "-v", default=None, help="Filter by venue name or area (e.g. 'bandra', 'khar', 'worli')")
     search_p.add_argument("--max-price", "-p", type=float, default=None, help="Maximum price per slot in ₹")
-    search_p.add_argument("--json", action="store_true", help="Output results in JSON format")
+    search_p.add_argument("--json", action="store_true", help="Output results in pure JSON format")
 
     # Command: sniper (Phase 2 feature flag)
     sniper_p = subparsers.add_parser("sniper", help="[Phase 2 Feature] Run background monitor for cancellations & newly dropped slots")
@@ -82,7 +65,7 @@ def main():
     venues_p.add_argument("--query", "-q", default=None, help="Search query for venue name or address")
 
     # Command: sync
-    sync_p = subparsers.add_parser("sync", help="Refresh/update the local venue catalog from Hudle")
+    subparsers.add_parser("sync", help="Refresh/update the local venue catalog from Hudle")
 
     # Command: login (Phase 3 feature flag)
     login_p = subparsers.add_parser("login", help="[Phase 3 Feature] Log into Hudle to save your auth token for bookings")
@@ -95,7 +78,7 @@ def main():
         try:
             target_date = parse_date(date_input)
         except ValueError as e:
-            print(f"Error: {e}")
+            print(f"Error: {e}", file=sys.stderr)
             sys.exit(1)
 
         time_window = getattr(args, "time", None)
@@ -118,22 +101,21 @@ def main():
             display_slots_table(slots, target_date)
 
     elif args.command == "sniper":
-        if not (getattr(args, "enable", False) or is_phase2_enabled()):
+        if not (getattr(args, "enable", False) or config.is_phase2_enabled()):
             print("⚠️  Phase 2 (Drop Alert / Court Sniper) is currently disabled.")
             print("To activate in the future, pass '--enable' or set ENABLE_PHASE2=true in your environment/config.json.")
             sys.exit(0)
 
-        from sniper import SlotSniper, load_config
-        cfg = load_config()
+        from sniper import SlotSniper
         try:
             target_date = parse_date(args.date)
         except ValueError as e:
-            print(f"Error: {e}")
+            print(f"Error: {e}", file=sys.stderr)
             sys.exit(1)
 
-        bot_token = cfg.get("telegram_bot_token")
-        chat_id = args.chat_id or cfg.get("telegram_chat_id")
-        auth_token = cfg.get("hudle_auth_token")
+        bot_token = config.get_bot_token()
+        chat_id = args.chat_id or config.get_chat_id()
+        auth_token = config.get_auth_token()
 
         sniper = SlotSniper(
             date_str=target_date,
@@ -163,7 +145,7 @@ def main():
     elif args.command == "venues":
         catalog = load_cached_catalog()
         if not catalog:
-            print("No cached venues found. Run 'python hudle_padel.py sync' first.")
+            print("No cached venues found. Run 'python hudle_padel.py sync' first.", file=sys.stderr)
             return
 
         if getattr(args, "zone", None):
@@ -189,7 +171,7 @@ def main():
         sync_mumbai_padel_catalog()
 
     elif args.command == "login":
-        if not (getattr(args, "enable", False) or is_phase3_enabled()):
+        if not (getattr(args, "enable", False) or config.is_phase3_enabled()):
             print("⚠️  Phase 3 (Account Login & Auto-Booking) is currently disabled.")
             print("To activate in the future, pass '--enable' or set ENABLE_PHASE3=true in your environment/config.json.")
             sys.exit(0)
@@ -203,17 +185,15 @@ def main():
             res = client.login(email, password)
             token = res.get("token") or res.get("data", {}).get("token")
             if token:
-                cfg = load_local_config()
-                cfg["hudle_auth_token"] = token
-                save_local_config(cfg)
+                config.save_config({"hudle_auth_token": token})
                 user_name = res.get("data", {}).get("name") or email
                 print(f"✅ Success! Logged in as {user_name}.")
-                print(f"🔑 Auth token saved securely to config.json.")
+                print("🔑 Auth token saved securely to config.json.")
             else:
                 msg = res.get("message") or res.get("errors") or "Authentication failed"
-                print(f"❌ Login failed: {msg}")
+                print(f"❌ Login failed: {msg}", file=sys.stderr)
         except Exception as e:
-            print(f"❌ Login error: {e}")
+            print(f"❌ Login error: {e}", file=sys.stderr)
 
 if __name__ == "__main__":
     main()

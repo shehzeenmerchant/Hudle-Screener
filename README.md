@@ -6,28 +6,29 @@ A fast, lightweight CLI and automation toolkit to discover, monitor, and query r
 
 ## ⚡ Features
 
-### Phase 1: Slot Search & Discovery
-- **Local Catalog Cache (`venues_cache.json`):** Pre-maps all 49+ Mumbai Padel venues (~106 courts) with individual court UUIDs to eliminate redundant API calls and prevent rate limiting.
-- **Smart Querying:** Search available slots by date (`today`, `tomorrow`, or `YYYY-MM-DD`), time window (`19:00-22:00`), area/venue filter (`bandra`, `worli`, `andheri`, `khar`, etc.), and max price.
+### Phase 1: Slot Search & Discovery (Active)
+- **Local Catalog Cache (`venues_cache.json`):** Pre-maps all 49 Mumbai Padel venues (96 active playable courts) with individual court UUIDs to eliminate redundant API calls and prevent rate limiting. Equipment rentals (racquets, balls, machines) are automatically filtered out.
+- **Smart Querying:** Search available slots by date (`today`, `tomorrow`, or `YYYY-MM-DD`), time window (`19:00-22:00` or presets `morning`, `evening`, `night`, `all`), area/venue filter (`bandra`, `worli`, `andheri`, `khar`, etc.), and max price.
 - **Direct Booking URLs:** Generates one-click direct web links to reserve courts on Hudle.
-- **JSON Output:** Pipe live availability directly into bots, notifications (Telegram/WhatsApp), or scripts.
+- **Pure JSON Output & Unix Piping:** Separation of `stdout` (pure data) and `sys.stderr` (diagnostics) ensures seamless piping into tools like `jq` (`hudle_padel.py search --json | jq .`).
 
-### Phase 2: Drop Alert & Cancellation Sniper
+### Phase 2: Drop Alert & Cancellation Sniper (Feature Flagged)
 - **Real-Time Court Sniper (`sniper.py`):** Background monitor that continuously checks prime slots (e.g., 7:00 PM – 10:00 PM).
 - **Instant Telegram Drop Alerts:** Sends immediate notifications with inline booking buttons as soon as someone cancels a prime court slot.
 - **Smart Consecutive Pairing:** Automatically detects and pairs consecutive 30-minute slots into full 1-hour sessions.
-- **Rate-Limit Resilient:** Safely polls targeted zones or venues within Hudle's 60 req/min sliding window.
+- **Feature Flag Protected:** Gated behind `--enable` or `ENABLE_PHASE2=true`.
 
-### Phase 3: Account Authentication & Auto-Booking Groundwork
+### Phase 3: Account Authentication & Auto-Booking (Feature Flagged)
 - **CLI Login (`hudle_padel.py login`):** Authenticate with your Hudle account to obtain a session JWT token.
 - **Booking API Integration:** Direct programmatic court reservations via `HudleClient.create_booking()`.
+- **Feature Flag Protected:** Gated behind `--enable` or `ENABLE_PHASE3=true`.
 
 ---
 
 ## 🚀 Quick Start
 
 ### 1. Installation
-Clone the repository and install requirements (standard library only; zero external dependencies required):
+Clone the repository (standard library only; zero external dependencies required):
 ```bash
 git clone https://github.com/shehzeenmerchant/Hudle-Screener.git
 cd Hudle-Screener
@@ -43,6 +44,8 @@ Edit `config.json` or export environment variables:
 {
   "telegram_bot_token": "YOUR_BOT_TOKEN_FROM_BOTFATHER",
   "telegram_chat_id": "YOUR_CHAT_ID",
+  "enable_phase2_sniper": false,
+  "enable_phase3_autobook": false,
   "hudle_auth_token": ""
 }
 ```
@@ -66,7 +69,7 @@ A complete, zero-dependency Telegram Bot is included in `telegram_bot.py`.
    ```
 
 ### Option B: Deploy to Vercel (Serverless Webhook)
-1. Push your repository to GitHub (already configured on `main`).
+1. Push your repository to GitHub.
 2. Go to [Vercel](https://vercel.com) and click **"Add New Project"** -> Import `Hudle-Screener`.
 3. In Project Settings -> **Environment Variables**, add:
    - `TELEGRAM_BOT_TOKEN`: `<your_bot_token>`
@@ -94,13 +97,13 @@ Never miss a prime evening slot when another player cancels!
 
 ```bash
 # Monitor South Mumbai prime slots (7 PM - 10 PM) tomorrow with Telegram alerts:
-python sniper.py --zone south --date tomorrow --time 19:00-22:00 --chat-id YOUR_CHAT_ID
+python sniper.py --enable --zone south --date tomorrow --time 19:00-22:00 --chat-id YOUR_CHAT_ID
 
 # Monitor Bandra / Khar courts tonight:
-python sniper.py --venue bandra --date today --time 19:00-23:00 --interval 45
+python sniper.py --enable --venue bandra --date today --time 19:00-23:00 --interval 45
 
 # Or use via main CLI:
-python hudle_padel.py sniper --zone south --date tomorrow --time 19:00-22:00
+python hudle_padel.py sniper --enable --zone south --date tomorrow --time 19:00-22:00
 ```
 
 When a court is cancelled or becomes available, you'll immediately hear a terminal sound bell and receive a Telegram alert with a 1-tap booking button!
@@ -120,8 +123,8 @@ python hudle_padel.py search --zone west --date today --time 20:00-23:00
 # Search Bandra venues with a price cap
 python hudle_padel.py search --venue bandra --date tomorrow --time 18:00-22:00 --max-price 2000
 
-# Output results as JSON (ideal for piping into scripts)
-python hudle_padel.py search --venue worli --date tomorrow --time 19:00-22:00 --json
+# Output results as JSON and pipe into jq
+python hudle_padel.py search --venue worli --date tomorrow --time 19:00-22:00 --json | jq .
 ```
 
 ### 2. Browse Venues by Geographic Zone
@@ -140,7 +143,7 @@ python hudle_padel.py venues --query "padel 360"
 
 ### 3. Log In to Hudle Account (Phase 3)
 ```bash
-python hudle_padel.py login
+python hudle_padel.py login --enable
 ```
 Securely saves your session JWT token into `config.json` for automated bookings.
 
@@ -152,9 +155,19 @@ python hudle_padel.py sync
 
 ---
 
+## 🧪 Testing
+
+Run the zero-dependency test suite to verify configuration precedence, zone classification, time/date parsing, stream separation, and catalog integrity:
+
+```bash
+python3 -m unittest test_screener.py
+```
+
+---
+
 ## 🗺️ Mumbai Geographic Zones
 
-To prevent triggering Hudle's 60 req/min rate limit during city-wide searches, the 49 venues are organized into 3 zones:
+To prevent triggering Hudle's rate limit during city-wide searches, the 49 venues are organized into 3 zones:
 
 1. **South Mumbai (`--zone south` / `/sobo`):** 19 venues (Worli, Lower Parel, Byculla, Mazgaon, Dadar, Marine Lines, Colaba, Malabar Hill).
 2. **Western Suburbs (`--zone west` / `/west`):** 23 venues (Bandra, Khar, Juhu, Vile Parle, Andheri, Lokhandwala, Goregaon, Kandivali).
@@ -164,15 +177,19 @@ To prevent triggering Hudle's 60 req/min rate limit during city-wide searches, t
 
 ## 📁 Repository Structure
 ```
-├── hudle_client.py     # Resilient API client with rate limit retry & auth
-├── search.py           # Slot search query engine and table renderer
-├── sniper.py           # Drop Alert & Cancellation Sniper monitor
+├── config.py           # Centralized configuration with env var precedence & 0o600 permissions
+├── config.example.json # Configuration template
+├── hudle_client.py     # Resilient API client with rate limit retry & in-memory slot caching
+├── search.py           # Slot search query engine and table renderer (stdout/stderr separated)
+├── sniper.py           # Drop Alert & Cancellation Sniper monitor (Phase 2 flagged)
 ├── hudle_padel.py      # Unified CLI tool (search, sniper, venues, sync, login)
-├── telegram_bot.py     # Zero-dependency interactive Telegram Bot
-├── sync_catalog.py     # Venue & court catalog builder
-├── venues_cache.json   # 49 Mumbai padel venues & 106 courts mapped
+├── telegram_bot.py     # Interactive Telegram Bot with HTML entity escaping
+├── sync_catalog.py     # Venue & court catalog builder (pruned of non-court items)
+├── classify_zones.py   # Regex-based geographic zone classifier
+├── venues_cache.json   # 49 Mumbai padel venues & 96 courts mapped
+├── test_screener.py    # Unit test suite (19 test cases, zero dependencies)
 ├── api/
 │   └── webhook.py      # Serverless Telegram webhook handler for Vercel
 ├── vercel.json         # Vercel serverless deployment routing
-└── config.example.json # Configuration template
+└── requirements.txt    # Standard library declaration
 ```

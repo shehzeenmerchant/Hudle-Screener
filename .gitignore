@@ -24,8 +24,5 @@ dist/
 .env.local
 config.json
 
-# Scratch and test files
+# Scratch files
 scratch/
-test_*.py
-benchmark_*.py
-find_9pm_tonight.py

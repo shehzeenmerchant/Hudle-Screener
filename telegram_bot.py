@@ -1,5 +1,5 @@
+import html
 import json
-import os
 import ssl
 import sys
 import time
@@ -7,33 +7,12 @@ import urllib.error
 import urllib.request
 from typing import Any, Dict, List, Optional
 
+import config
 from hudle_client import HudleClient
 from search import format_time_12hr, normalize_zone, parse_date, search_slots
 from sync_catalog import load_cached_catalog
 
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), "config.json")
 CTX = ssl.create_default_context()
-
-def load_config() -> Dict[str, str]:
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, "r") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {"telegram_bot_token": os.environ.get("TELEGRAM_BOT_TOKEN", "")}
-
-def save_config(cfg: Dict[str, str]):
-    with open(CONFIG_FILE, "w") as f:
-        json.dump(cfg, f, indent=2)
-
-def is_phase2_enabled() -> bool:
-    cfg = load_config()
-    return os.environ.get("ENABLE_PHASE2", "").lower() in ("1", "true") or bool(cfg.get("enable_phase2_sniper", False))
-
-def is_phase3_enabled() -> bool:
-    cfg = load_config()
-    return os.environ.get("ENABLE_PHASE3", "").lower() in ("1", "true") or bool(cfg.get("enable_phase3_autobook", False))
 
 class TelegramBot:
     def __init__(self, token: str):
@@ -55,12 +34,12 @@ class TelegramBot:
                 res = json.loads(r.read().decode("utf-8"))
                 if res.get("ok"):
                     return res.get("result")
-                print(f"Telegram API Error: {res}")
+                print(f"Telegram API Error: {res}", file=sys.stderr)
         except urllib.error.HTTPError as e:
             body = e.read().decode("utf-8", errors="ignore") if hasattr(e, "read") else ""
-            print(f"Telegram HTTP {e.code}: {body}")
+            print(f"Telegram HTTP {e.code}: {body}", file=sys.stderr)
         except Exception as e:
-            print(f"Telegram Call Error: {e}")
+            print(f"Telegram Call Error: {e}", file=sys.stderr)
         return None
 
     def send_message(self, chat_id: int, text: str, reply_markup: Optional[Dict[str, Any]] = None, parse_mode: str = "HTML"):
@@ -83,13 +62,14 @@ class TelegramBot:
             {"command": "venues", "description": "List venues: /venues [south/west/east]"},
             {"command": "help", "description": "Show usage instructions"}
         ]
-        if is_phase2_enabled():
+        if config.is_phase2_enabled():
             commands.insert(4, {"command": "sniper", "description": "Setup drop & cancellation alerts for your chat"})
         self._api_call("setMyCommands", {"commands": commands})
 
     def handle_start(self, chat_id: int, user_first_name: str):
+        safe_name = html.escape(user_first_name)
         text = (
-            f"👋 <b>Hey {user_first_name}! Welcome to Mumbai Padel Finder.</b>\n\n"
+            f"👋 <b>Hey {safe_name}! Welcome to Mumbai Padel Finder.</b>\n\n"
             "I scan all 49+ Mumbai Padel courts across <b>South Mumbai, Western Suburbs & Eastern Suburbs</b> in real time on Hudle.\n\n"
             "⚡ <b>Quick Shortcuts:</b>\n"
             "• /sobo — South Mumbai slots tomorrow (7-10 PM)\n"
@@ -122,7 +102,7 @@ class TelegramBot:
         self.send_message(chat_id, text, reply_markup=keyboard)
 
     def handle_sniper_info(self, chat_id: int):
-        if not is_phase2_enabled():
+        if not config.is_phase2_enabled():
             self.send_message(
                 chat_id,
                 "ℹ️ <b>Phase 2 (Court Sniper & Drop Alerts)</b> is currently disabled.\n\n"
@@ -147,28 +127,40 @@ class TelegramBot:
         if norm_z:
             catalog = [v for v in catalog if v.get("zone") == norm_z]
 
-        zone_title = f" ({norm_z.replace('_', ' ').title()})" if norm_z else ""
+        zone_title = f" ({html.escape(norm_z.replace('_', ' ').title())})" if norm_z else ""
         msg = f"🎾 <b>Mumbai Padel Venues{zone_title} ({len(catalog)} venues):</b>\n\n"
 
         for idx, v in enumerate(catalog[:15], 1):
             courts_count = len(v.get("courts", []))
             addr = v.get("address") or "Mumbai"
             url = v.get("share_url") or "https://hudle.in"
-            msg += f"<b>{idx}. <a href='{url}'>{v['name']}</a></b> ({courts_count} courts)\n📍 <i>{addr[:50]}</i>\n\n"
+            safe_name = html.escape(v.get("name", "Unknown Venue"))
+            safe_addr = html.escape(addr[:50])
+            msg += f"<b>{idx}. <a href='{url}'>{safe_name}</a></b> ({courts_count} courts)\n📍 <i>{safe_addr}</i>\n\n"
 
         if len(catalog) > 15:
             msg += f"<i>...and {len(catalog) - 15} more venues. Use /venues [south/west/east] to filter.</i>"
 
         self.send_message(chat_id, msg)
 
-    def execute_search(self, chat_id: int, zone_filter: Optional[str] = None, venue_filter: Optional[str] = None, date_input: str = "tomorrow", time_window: str = "19:00-22:00"):
+    def execute_search(
+        self,
+        chat_id: int,
+        zone_filter: Optional[str] = None,
+        venue_filter: Optional[str] = None,
+        date_input: str = "tomorrow",
+        time_window: str = "19:00-22:00"
+    ):
         try:
             target_date = parse_date(date_input)
         except Exception:
             target_date = parse_date("tomorrow")
 
         area_label = zone_filter or venue_filter or "Mumbai"
-        self.send_message(chat_id, f"🔎 <i>Scanning courts in <b>{area_label.title()}</b> for {target_date} ({time_window})...</i>")
+        safe_area = html.escape(area_label.title())
+        safe_time = html.escape(time_window)
+
+        self.send_message(chat_id, f"🔎 <i>Scanning courts in <b>{safe_area}</b> for {target_date} ({safe_time})...</i>")
 
         try:
             slots = search_slots(
@@ -179,13 +171,13 @@ class TelegramBot:
                 client=self.client
             )
         except Exception as e:
-            self.send_message(chat_id, f"⚠️ Error querying slots: {e}")
+            self.send_message(chat_id, f"⚠️ Error querying slots: {html.escape(str(e))}")
             return
 
         if not slots:
             self.send_message(
                 chat_id,
-                f"❌ <b>No available slots found</b> matching your criteria in <b>{area_label.title()}</b> for {target_date} ({time_window})."
+                f"❌ <b>No available slots found</b> matching your criteria in <b>{safe_area}</b> for {target_date} ({safe_time})."
             )
             return
 
@@ -203,7 +195,10 @@ class TelegramBot:
             price = int(s["price"])
             url = s["share_url"]
 
-            msg += f"• <b>{t_start} – {t_end}</b> | <b>₹{price}</b>\n  🏟 <b>{v_name}</b> ({c_name})\n\n"
+            safe_v = html.escape(v_name)
+            safe_c = html.escape(c_name)
+
+            msg += f"• <b>{t_start} – {t_end}</b> | <b>₹{price}</b>\n  🏟 <b>{safe_v}</b> ({safe_c})\n\n"
             buttons.append([{"text": f"Book {v_name[:20]} ({t_start})", "url": url}])
 
         if len(slots) > 10:
@@ -237,7 +232,6 @@ class TelegramBot:
             self.handle_venues(chat_id, zone)
         elif text.startswith("/slots"):
             parts = text.split()
-            # Usage: /slots [zone/venue] [date] [time]
             zone_or_venue = parts[1] if len(parts) > 1 else "south"
             date_arg = parts[2] if len(parts) > 2 else "tomorrow"
             time_arg = parts[3] if len(parts) > 3 else "19:00-22:00"
@@ -248,7 +242,7 @@ class TelegramBot:
             else:
                 self.execute_search(chat_id, venue_filter=zone_or_venue, date_input=date_arg, time_window=time_arg)
         else:
-            # Fallback simple search: if user types "bandra" or "mazgaon"
+            # Fallback simple search: if user types "bandra", "mazgaon", "sobo"
             low = text.lower()
             if any(k in low for k in ["south", "sobo", "west", "east"]):
                 norm_zone = normalize_zone(low)
@@ -262,7 +256,7 @@ class TelegramBot:
         message = cb.get("message", {})
         chat_id = message.get("chat", {}).get("id")
 
-        # Acknowledge callback query
+        # Acknowledge callback query to stop Telegram loading spinner
         self._api_call("answerCallbackQuery", {"callback_query_id": cb_id})
 
         if not chat_id:
@@ -270,10 +264,13 @@ class TelegramBot:
 
         if data.startswith("search:"):
             # Format: search:zone:date:time
-            _, zone, date_str, time_str = data.split(":")
-            self.execute_search(chat_id, zone_filter=zone, date_input=date_str, time_window=time_str)
+            parts = data.split(":")
+            if len(parts) == 4:
+                _, zone, date_str, time_str = parts
+                self.execute_search(chat_id, zone_filter=zone, date_input=date_str, time_window=time_str)
         elif data.startswith("venues:"):
-            _, zone = data.split(":")
+            parts = data.split(":")
+            zone = parts[1] if len(parts) > 1 else "all"
             self.handle_venues(chat_id, None if zone == "all" else zone)
 
     def run(self):
@@ -295,14 +292,13 @@ class TelegramBot:
                         elif "callback_query" in u:
                             self.process_callback_query(u["callback_query"])
             except Exception as e:
-                print(f"Polling error: {e}")
+                print(f"Polling error: {e}", file=sys.stderr)
                 time.sleep(2)
 
 def main():
-    cfg = load_config()
-    token = cfg.get("telegram_bot_token")
+    token = config.get_bot_token()
 
-    if not token or token == "YOUR_TELEGRAM_BOT_TOKEN_HERE":
+    if not token:
         print("=" * 60)
         print("⚙️ TELEGRAM BOT SETUP")
         print("=" * 60)
@@ -312,13 +308,12 @@ def main():
         print("2. Send '/newbot' and follow prompts to name your bot")
         print("3. Copy the API Token (e.g. 123456789:ABCdefGHI...)")
         print("=" * 60)
-        
+
         entered_token = input("\nEnter your Telegram Bot Token: ").strip()
         if not entered_token:
             print("No token provided. Exiting.")
             sys.exit(1)
-        cfg["telegram_bot_token"] = entered_token
-        save_config(cfg)
+        config.save_config({"telegram_bot_token": entered_token})
         token = entered_token
 
     bot = TelegramBot(token)
