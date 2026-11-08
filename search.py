@@ -27,13 +27,25 @@ def parse_date(date_input: str) -> str:
             raise ValueError(f"Invalid date format '{date_input}'. Use 'today', 'tomorrow', or 'YYYY-MM-DD'.")
 
 def parse_time_window(time_str: Optional[str]):
-    """Parses '19:00-22:00' or '19-22' into (start_minutes, end_minutes)."""
+    """Parses '19:00-22:00', '18-21', or presets ('all', 'morning', 'evening', 'night') into (start_minutes, end_minutes)."""
     if not time_str:
         return 0, 24 * 60
 
+    t_clean = time_str.strip().lower()
+    if t_clean in ("all", "any", "day", "all-day", "allday", "*"):
+        return 0, 24 * 60
+    elif t_clean in ("morning", "am"):
+        return 6 * 60, 12 * 60       # 06:00 - 12:00
+    elif t_clean in ("afternoon", "noon", "pm"):
+        return 12 * 60, 17 * 60      # 12:00 - 17:00
+    elif t_clean in ("evening", "prime"):
+        return 18 * 60, 22 * 60      # 18:00 - 22:00
+    elif t_clean in ("night", "late"):
+        return 21 * 60, 24 * 60      # 21:00 - 24:00
+
     parts = time_str.split("-")
     if len(parts) != 2:
-        raise ValueError("Time range must be formatted as 'HH:MM-HH:MM' (e.g. '19:00-22:00' or '18-21')")
+        raise ValueError("Time range must be formatted as 'HH:MM-HH:MM' (e.g. '19:00-22:00' or '18-21') or preset ('all', 'morning', 'evening', 'night')")
 
     def to_minutes(t_part: str) -> int:
         t_part = t_part.strip()
