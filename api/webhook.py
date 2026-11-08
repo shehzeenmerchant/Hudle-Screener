@@ -32,18 +32,30 @@ class handler(BaseHTTPRequestHandler):
         content_length = int(self.headers.get("Content-Length", 0))
         post_data = self.rfile.read(content_length) if content_length > 0 else b""
         
+        # Acknowledge Telegram immediately (under 50ms) so Telegram never experiences read timeouts
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(b'{"status":"ok"}')
+        try:
+            self.wfile.flush()
+        except Exception:
+            pass
+
+        if not post_data:
+            return
+
         cfg = load_config() if not IMPORT_ERROR else {}
         token = os.environ.get("TELEGRAM_BOT_TOKEN") or cfg.get("telegram_bot_token") or DEFAULT_BOT_TOKEN
         
         if not token:
-            self.send_response(500)
-            self.end_headers()
-            self.wfile.write(b"TELEGRAM_BOT_TOKEN environment variable not set")
+            print("TELEGRAM_BOT_TOKEN not configured")
             return
 
         try:
             if IMPORT_ERROR:
-                raise RuntimeError(f"Dependencies failed to load: {IMPORT_ERROR}")
+                print(f"Dependencies failed to load: {IMPORT_ERROR}")
+                return
 
             update = json.loads(post_data.decode("utf-8"))
             bot = TelegramBot(token)
@@ -53,12 +65,5 @@ class handler(BaseHTTPRequestHandler):
             elif "callback_query" in update:
                 bot.process_callback_query(update["callback_query"])
 
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            self.wfile.write(json.dumps({"status": "ok"}).encode("utf-8"))
         except Exception as e:
-            print(f"Webhook error: {e}")
-            self.send_response(200) # Always return 200 to Telegram so it doesn't repeatedly retry
-            self.end_headers()
-            self.wfile.write(b"OK")
+            print(f"Webhook processing error: {e}")
